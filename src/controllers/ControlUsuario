@@ -53,3 +53,14 @@ module.exports = {
     res.redirect('/users/profile');
   }
 };
+module.exports = {
+  async editForm(req, res) {
+    const user = await User.findById(req.session.userId);
+    res.render('users/profile', { user });
+  },
+  async update(req, res) {
+    const { id, name, email, tipo } = req.body;
+    await User.update(id, name, email, tipo);
+    res.redirect('/users/profile');
+  }
+};

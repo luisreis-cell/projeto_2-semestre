@@ -1,0 +1,18 @@
+<%- include('../partials/header', { title: 'Alterar Curso do Aluno' }) %>
+<%- include('../partials/navbar') %>
+<div class="container">
+  <h2>Alterar Curso do Aluno</h2>
+  <form action="/enrollments/update" method="POST">
+    <input type="hidden" name="aluno_id" value="<%= aluno_id %>"/>
+    <div class="form-group">
+      <label for="curso_id">Curso:</label>
+      <select name="curso_id" required>
+        <% courses.forEach(c => { %>
+          <option value="<%= c.id %>" <%= enrollment && enrollment.curso_id === c.id ? 'selected' : '' %>><%= c.nome %></option>
+        <% }) %>
+      </select>
+    </div>
+    <button type="submit">Salvar</button>
+  </form>
+</div>
+<%- include('../partials/footer') %>

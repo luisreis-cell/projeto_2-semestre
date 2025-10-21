@@ -1,0 +1,15 @@
+{
+  "name": "projeto_2-semestre",
+  "version": "1.0.0",
+  "description": "Projeto do 2°semestre do curso de informática",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}

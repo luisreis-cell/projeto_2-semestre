@@ -42,3 +42,8 @@ module.exports = {
     await db.execute('DELETE FROM Usuarios WHERE id = ?', [id]);
   }
 };
+module.exports = {
+  async update(id, name, email, tipo) {
+    await db.execute('UPDATE Usuarios SET nome=?, email=?, tipo=? WHERE id=?', [name, email, tipo, id]);
+  }
+};
