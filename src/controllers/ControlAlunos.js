@@ -6,3 +6,12 @@ module.exports = {
     res.render('students/list', { students });
   }
 };
+
+const Student = require('../models/student');
+
+module.exports = {
+  async remove(req, res) {
+    await Student.remove(req.params.id);
+    res.redirect('/students');
+  }
+};

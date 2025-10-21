@@ -1,0 +1,22 @@
+<%- include('../partials/header', { title: 'Cursos por Duração' }) %>
+<%- include('../partials/navbar', { user }) %>
+<div class="container">
+  <h2>Cursos com <%= courses.length ? courses[0].duracao : '' %> horas</h2>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Nome</th><th>Descrição</th><th>Duração</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% courses.forEach(c => { %>
+        <tr>
+          <td><%= c.nome %></td>
+          <td><%= c.descricao %></td>
+          <td><%= c.duracao %></td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</div>
+<%- include('../partials/footer') %>
