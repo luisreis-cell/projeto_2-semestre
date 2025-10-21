@@ -14,15 +14,14 @@ app.use(session({
   saveUninitialized: false
 }));
 
-// Middleware de autenticação
 function authMiddleware(req, res, next) {
-  if (!req.session.userId && !['/login', '/register'].includes(req.path)) {
+  const publicPaths = ['/login', '/register'];
+  if (!req.session.userId && !publicPaths.includes(req.path)) {
     return res.redirect('/login');
   }
   next();
 }
 
-// Rotas
 const authRoutes = require('./routes/auth');
 const studentRoutes = require('./routes/students');
 const courseRoutes = require('./routes/courses');
@@ -36,6 +35,10 @@ app.use(userRoutes);
 
 app.get('/', (req, res) => {
   res.render('index', { user: req.session.userName });
+});
+
+app.use((err, req, res, next) => {
+  res.status(500).send('Erro interno do servidor');
 });
 
 const PORT = process.env.PORT || 3000;

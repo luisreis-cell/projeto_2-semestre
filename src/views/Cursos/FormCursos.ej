@@ -1,0 +1,29 @@
+<%- include('../partials/header', { title: 'Cadastro de Curso' }) %>
+<%- include('../partials/navbar') %>
+<div class="container">
+  <h2>Cadastro de Curso</h2>
+  <form action="/courses/save" method="POST">
+    <div class="form-group">
+      <label for="nome">Nome do Curso:</label>
+      <input type="text" name="nome" required/>
+    </div>
+    <div class="form-group">
+      <label for="descricao">Descrição:</label>
+      <input type="text" name="descricao" required/>
+    </div>
+    <div class="form-group">
+      <label for="duracao">Duração (horas):</label>
+      <input type="number" name="duracao"/>
+    </div>
+    <div class="form-group">
+      <label for="data_inicio">Data Início:</label>
+      <input type="date" name="data_inicio"/>
+    </div>
+    <div class="form-group">
+      <label for="data_fim">Data Fim:</label>
+      <input type="date" name="data_fim"/>
+    </div>
+    <button type="submit">Cadastrar</button>
+  </form>
+</div>
+<%- include('../partials/footer') %>

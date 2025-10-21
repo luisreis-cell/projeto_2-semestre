@@ -14,3 +14,42 @@ module.exports = {
     res.redirect('/users');
   }
 };
+
+const User = require('../models/user');
+const bcrypt = require('bcrypt');
+
+module.exports = {
+  async register(req, res) {
+    const { name, email, password, tipo } = req.body;
+    const hash = await bcrypt.hash(password, 10);
+    await User.create(name, email, hash, tipo);
+    res.redirect('/login');
+  }
+};
+
+module.exports = {
+  async login(req, res) {
+    const { email, password } = req.body;
+    const user = await User.findByEmail(email);
+    if (user && await bcrypt.compare(password, user.senha)) {
+      req.session.userId = user.id;
+      req.session.userName = user.nome;
+      req.session.userTipo = user.tipo;
+      res.redirect('/');
+    } else {
+      res.render('auth/login', { error: 'Email ou senha inválidos.' });
+    }
+  }
+};
+
+module.exports = {
+  async editForm(req, res) {
+    const user = await User.findById(req.session.userId);
+    res.render('users/profile', { user });
+  },
+  async update(req, res) {
+    const { id, name, email, tipo } = req.body;
+    await User.update(id, name, email, tipo);
+    res.redirect('/users/profile');
+  }
+};

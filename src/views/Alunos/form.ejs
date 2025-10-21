@@ -1,0 +1,21 @@
+<%- include('../partials/header', { title: 'Cadastro de Aluno' }) %>
+<%- include('../partials/navbar') %>
+<div class="container">
+  <h2>Cadastro de Aluno</h2>
+  <form action="/students/save" method="POST">
+    <div class="form-group">
+      <label for="nome">Nome:</label>
+      <input type="text" name="nome" required/>
+    </div>
+    <div class="form-group">
+      <label for="email">Email:</label>
+      <input type="email" name="email" required/>
+    </div>
+    <div class="form-group">
+      <label for="telefone">Telefone:</label>
+      <input type="text" name="telefone"/>
+    </div>
+    <button type="submit">Cadastrar</button>
+  </form>
+</div>
+<%- include('../partials/footer') %>

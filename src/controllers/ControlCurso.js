@@ -23,3 +23,15 @@ module.exports = {
     res.redirect('/courses');
   }
 };
+const Course = require('../models/course');
+
+module.exports = {
+  showForm(req, res) {
+    res.render('courses/form');
+  },
+  async create(req, res) {
+    const { nome, descricao, duracao, data_inicio, data_fim } = req.body;
+    await Course.create(nome, descricao, duracao, data_inicio, data_fim);
+    res.redirect('/courses');
+  }
+};

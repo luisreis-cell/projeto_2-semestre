@@ -1,0 +1,29 @@
+<%- include('../partials/header', { title: 'Cadastro de Usuário' }) %>
+<%- include('../partials/navbar') %>
+<div class="container">
+  <h2>Cadastro de Usuário</h2>
+  <form action="/register" method="POST">
+    <div class="form-group">
+      <label for="name">Nome:</label>
+      <input type="text" name="name" required/>
+    </div>
+    <div class="form-group">
+      <label for="email">Email:</label>
+      <input type="email" name="email" required/>
+    </div>
+    <div class="form-group">
+      <label for="password">Senha:</label>
+      <input type="password" name="password" required/>
+    </div>
+    <div class="form-group">
+      <label for="tipo">Tipo:</label>
+      <select name="tipo">
+        <option value="admin">Admin</option>
+        <option value="instrutor">Instrutor</option>
+        <option value="aluno" selected>Aluno</option>
+      </select>
+    </div>
+    <button type="submit">Cadastrar</button>
+  </form>
+</div>
+<%- include('../partials/footer') %>
