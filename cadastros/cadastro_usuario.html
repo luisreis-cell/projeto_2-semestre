@@ -2,16 +2,14 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Cadastro de Usuário</title>
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="container">
     <h1>Cadastro de Usuário</h1>
-
     <form id="userForm">
-      <input type="hidden" id="userId">
+      <input type="hidden" id="userId" />
       <div class="form-group">
         <label for="userName">Nome:</label>
         <input type="text" id="userName" required />
@@ -22,11 +20,10 @@
       </div>
       <button type="submit">Cadastrar</button>
     </form>
-
-    <h2>Lista de Usuários</h2>
+    <h2>Usuários Cadastrados</h2>
     <ul id="userList"></ul>
+    <a class="back-link" href="index.html">← Voltar ao menu principal</a>
   </div>
-
-  <script src="js/usuario.js"></script>
+  <script src="JS/usuario.js"></script>
 </body>
 </html>

@@ -1,0 +1,8 @@
+const User = require('../models/user');
+
+module.exports = {
+  async profile(req, res) {
+    const user = await User.findById(req.session.userId);
+    res.render('users/profile', { user });
+  }
+};

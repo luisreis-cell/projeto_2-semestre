@@ -1,0 +1,11 @@
+<%- include('../partials/header', { title: 'Meu Perfil' }) %>
+<%- include('../partials/navbar', { user: user.nome }) %>
+<div class="container">
+  <h2>Dados do Usuário</h2>
+  <ul>
+    <li><strong>Nome:</strong> <%= user.nome %></li>
+    <li><strong>Email:</strong> <%= user.email %></li>
+    <li><strong>Tipo:</strong> <%= user.tipo %></li>
+  </ul>
+</div>
+<%- include('../partials/footer') %>
