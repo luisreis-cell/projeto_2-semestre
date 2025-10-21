@@ -6,3 +6,11 @@ module.exports = {
     res.render('users/profile', { user });
   }
 };
+const User = require('../models/user');
+
+module.exports = {
+  async remove(req, res) {
+    await User.remove(req.params.id);
+    res.redirect('/users');
+  }
+};
