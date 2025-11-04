@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Perfil do Usuário</title>
+</head>
+<body>
+  <h1>Perfil do Usuário</h1>
+  <form method="POST" action="/usuario/update">
+    <input type="hidden" name="id" value="<%= user.id %>" />
+    <label>Nome:</label><input type="text" name="name" value="<%= user.nome %>" required /><br>
+    <label>Email:</label><input type="email" name="email" value="<%= user.email %>" required /><br>
+    <label>Tipo:</label>
+    <select name="tipo">
+      <option value="aluno" <%= user.tipo === 'aluno' ? 'selected' : '' %>>Aluno</option>
+      <option value="admin" <%= user.tipo === 'admin' ? 'selected' : '' %>>Administrador</option>
+    </select><br>
+    <button type="submit">Atualizar</button>
+  </form>
+</body>
+</html>
