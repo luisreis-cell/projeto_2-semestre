@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Lista de Cursos</title>
+</head>
+<body>
+  <h1>Lista de Cursos</h1>
+  <table border="1">
+    <tr>
+      <th>Nome</th>
+      <th>Descrição</th>
+      <th>Duração</th>
+      <th>Ações</th>
+    </tr>
+    <% courses.forEach(function(curso){ %>
+    <tr>
+      <td><%= curso.nome %></td>
+      <td><%= curso.descricao %></td>
+      <td><%= curso.duracao %></td>
+      <td>
+        <a href="/cursos/<%= curso.id %>/edit">Editar</a>
+        <a href="/cursos/<%= curso.id %>/delete">Excluir</a>
+      </td>
+    </tr>
+    <% }) %>
+  </table>
+</body>
+</html>
