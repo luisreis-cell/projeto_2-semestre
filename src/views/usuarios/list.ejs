@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Lista de Usuários</title>
+</head>
+<body>
+  <h1>Lista de Usuários</h1>
+  <table border="1">
+    <tr>
+      <th>Nome</th>
+      <th>Email</th>
+      <th>Tipo</th>
+      <th>Ações</th>
+    </tr>
+    <% users.forEach(function(user){ %>
+    <tr>
+      <td><%= user.nome %></td>
+      <td><%= user.email %></td>
+      <td><%= user.tipo %></td>
+      <td>
+        <a href="/usuario/<%= user.id %>/edit">Editar</a>
+        <a href="/usuario/<%= user.id %>/delete">Excluir</a>
+      </td>
+    </tr>
+    <% }) %>
+  </table>
+</body>
+</html>
