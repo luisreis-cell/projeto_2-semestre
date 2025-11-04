@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Cadastro de Usuário</title>
+</head>
+<body>
+  <h1>Cadastro de Usuário</h1>
+  <form method="POST" action="/usuario/register">
+    <label>Nome:</label><input type="text" name="name" required /><br>
+    <label>Email:</label><input type="email" name="email" required /><br>
+    <label>Senha:</label><input type="password" name="password" required /><br>
+    <label>Tipo:</label>
+    <select name="tipo">
+      <option value="aluno">Aluno</option>
+      <option value="admin">Administrador</option>
+    </select><br>
+    <button type="submit">Cadastrar</button>
+  </form>
+</body>
+</html>
