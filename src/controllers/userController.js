@@ -1,33 +1,26 @@
 const User = require('../models/user');
-
-module.exports = {
-  async profile(req, res) {
-    const user = await User.findById(req.session.userId);
-    res.render('users/profile', { user });
-  }
-};
-const User = require('../models/user');
-
-module.exports = {
-  async remove(req, res) {
-    await User.remove(req.params.id);
-    res.redirect('/users');
-  }
-};
-
-const User = require('../models/user');
 const bcrypt = require('bcrypt');
 
 module.exports = {
+  // Exibe formulário de login
+  showLogin(req, res) {
+    res.render('auth/login');
+  },
+
+  // Exibe formulário de registro
+  showRegister(req, res) {
+    res.render('auth/register');
+  },
+
+  // Registrar usuário
   async register(req, res) {
     const { name, email, password, tipo } = req.body;
     const hash = await bcrypt.hash(password, 10);
     await User.create(name, email, hash, tipo);
-    res.redirect('/login');
-  }
-};
+    res.redirect('/auth/login');
+  },
 
-module.exports = {
+  // Login
   async login(req, res) {
     const { email, password } = req.body;
     const user = await User.findByEmail(email);
@@ -39,28 +32,41 @@ module.exports = {
     } else {
       res.render('auth/login', { error: 'Email ou senha inválidos.' });
     }
-  }
-};
+  },
 
-module.exports = {
+  // Logout
+  logout(req, res) {
+    req.session.destroy();
+    res.redirect('/auth/login');
+  },
+
+  // Exibir perfil do usuário logado
+  async profile(req, res) {
+    const user = await User.findById(req.session.userId);
+    res.render('users/profile', { user });
+  },
+
+  // Editar perfil
   async editForm(req, res) {
     const user = await User.findById(req.session.userId);
     res.render('users/profile', { user });
   },
+
   async update(req, res) {
     const { id, name, email, tipo } = req.body;
     await User.update(id, name, email, tipo);
     res.redirect('/users/profile');
-  }
-};
-module.exports = {
-  async editForm(req, res) {
-    const user = await User.findById(req.session.userId);
-    res.render('users/profile', { user });
   },
-  async update(req, res) {
-    const { id, name, email, tipo } = req.body;
-    await User.update(id, name, email, tipo);
-    res.redirect('/users/profile');
+
+  // Remover usuário
+  async remove(req, res) {
+    await User.remove(req.params.id);
+    res.redirect('/users');
+  },
+
+  // Listar todos os usuários
+  async list(req, res) {
+    const users = await User.list();
+    res.render('users/list', { users });
   }
 };

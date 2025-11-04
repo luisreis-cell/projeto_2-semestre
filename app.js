@@ -1,24 +1,38 @@
-// ...existing code...
 const express = require('express');
 const path = require('path');
+const session = require('express-session'); // caso você use sessões
 const app = express();
 
+// Middlewares
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+
+// Configuração de sessão (necessário para login)
+app.use(session({
+  secret: 'sua_chave_secreta', // troque por uma chave segura
+  resave: false,
+  saveUninitialized: false
+}));
+
+// Views e arquivos estáticos
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use('/public', express.static(path.join(__dirname, 'public')));
 
-// rotas
+// Rotas
 const usersRouter = require('./routes/users');
-const authRouter = require('./routes/auth'); // se existir
-const studentsRouter = require('./routes/students'); // se existir
-const coursesRouter = require('./routes/courses'); // se existir
+const authRouter = require('./routes/auth');
+const studentsRouter = require('./routes/students');
+const coursesRouter = require('./routes/courses');
 
 app.use('/users', usersRouter);
 app.use('/auth', authRouter);
 app.use('/students', studentsRouter);
 app.use('/courses', coursesRouter);
 
-// ...existing code...
+// Rota raiz
+app.get('/', (req, res) => {
+  res.render('index', { userName: req.session.userName });
+});
+
 module.exports = app;
