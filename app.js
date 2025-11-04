@@ -1,45 +1,24 @@
+// ...existing code...
 const express = require('express');
-const session = require('express-session');
 const path = require('path');
 const app = express();
 
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
+app.use('/public', express.static(path.join(__dirname, 'public')));
 
-app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, 'public')));
-app.use(session({
-  secret: 'segredo_app_mvc',
-  resave: false,
-  saveUninitialized: false
-}));
+// rotas
+const usersRouter = require('./routes/users');
+const authRouter = require('./routes/auth'); // se existir
+const studentsRouter = require('./routes/students'); // se existir
+const coursesRouter = require('./routes/courses'); // se existir
 
-function authMiddleware(req, res, next) {
-  const publicPaths = ['/login', '/register'];
-  if (!req.session.userId && !publicPaths.includes(req.path)) {
-    return res.redirect('/login');
-  }
-  next();
-}
+app.use('/users', usersRouter);
+app.use('/auth', authRouter);
+app.use('/students', studentsRouter);
+app.use('/courses', coursesRouter);
 
-const authRoutes = require('./routes/auth');
-const studentRoutes = require('./routes/students');
-const courseRoutes = require('./routes/courses');
-const userRoutes = require('./routes/users');
-
-app.use(authRoutes);
-app.use(authMiddleware);
-app.use('/students', studentRoutes);
-app.use('/courses', courseRoutes);
-app.use(userRoutes);
-
-app.get('/', (req, res) => {
-  res.render('index', { user: req.session.userName });
-});
-
-app.use((err, req, res, next) => {
-  res.status(500).send('Erro interno do servidor');
-});
-
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}`));
+// ...existing code...
+module.exports = app;
