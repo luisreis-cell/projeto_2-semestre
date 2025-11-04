@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Editar curso do aluno</title>
+</head>
+<body>
+  <h1>Editar curso do aluno</h1>
+  <form method="POST" action="/matricula/save">
+    <input type="hidden" name="aluno_id" value="<%= aluno_id %>">
+    <label>Curso:</label>
+    <select name="curso_id">
+      <% courses.forEach(function(curso){ %>
+        <option value="<%= curso.id %>" <%= enrollment && enrollment.curso_id == curso.id ? 'selected' : '' %>><%= curso.nome %></option>
+      <% }) %>
+    </select>
+    <button type="submit">Salvar</button>
+  </form>
+</body>
+</html>
