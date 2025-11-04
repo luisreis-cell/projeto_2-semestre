@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Cadastro de Curso</title>
+</head>
+<body>
+  <h1>Cadastro de Curso</h1>
+  <form method="POST" action="/cursos/save">
+    <label>Nome:</label><input type="text" name="nome" required /><br>
+    <label>Descrição:</label><input type="text" name="descricao" /><br>
+    <label>Duração:</label><input type="text" name="duracao" /><br>
+    <label>Data início:</label><input type="date" name="data_inicio" /><br>
+    <label>Data fim:</label><input type="date" name="data_fim" /><br>
+    <button type="submit">Salvar</button>
+  </form>
+</body>
+</html>
