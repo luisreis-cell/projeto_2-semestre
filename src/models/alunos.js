@@ -14,9 +14,9 @@ module.exports = {
 const db = require('../config/db');
 module.exports = {
   async create(nome, email, telefone) {
-    const [result] = await db.execute(
+    const [resultado] = await db.execute(
       'INSERT INTO Alunos (nome, email, telefone) VALUES (?, ?, ?)', [nome, email, telefone]
     );
-    return result.insertId;
+    return resultado.insertId;
   }
 };
