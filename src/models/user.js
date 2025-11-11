@@ -1,6 +1,5 @@
-const db = require('../../config/db'); // Caminho correto para o db.js
+const db = require('../../config/db');
 
-// Exemplo de função para buscar usuários
 async function getUsers() {
   const [rows] = await db.query('SELECT * FROM users');
   return rows;
