@@ -1,20 +1,24 @@
 const db = require('../config/db');
 
-module.exports = {
-  async findByDuration(duracao) {
-    const [rows] = await db.execute(
-      'SELECT * FROM Cursos WHERE duracao = ?', [duracao]
-    );
+class Course {
+  static async findAll() {
+    const [rows] = await db.query('SELECT * FROM courses');
     return rows;
   }
-};
-const db = require('../config/db');
-module.exports = {
-  async create(nome, descricao, duracao, data_inicio, data_fim) {
-    const [result] = await db.execute(
-      'INSERT INTO Cursos (nome, descricao, duracao, data_inicio, data_fim) VALUES (?, ?, ?, ?, ?)',
-      [nome, descricao, duracao, data_inicio, data_fim]
-    );
-    return result.insertId;
+
+  static async findById(id) {
+    const [rows] = await db.query('SELECT * FROM courses WHERE id = ?', [id]);
+    return rows[0];
   }
-};
+
+  static async create(data) {
+    const { name, description } = data;
+    await db.query('INSERT INTO courses (name, description) VALUES (?, ?)', [name, description]);
+  }
+
+  static async delete(id) {
+    await db.query('DELETE FROM courses WHERE id = ?', [id]);
+  }
+}
+
+module.exports = Course;
