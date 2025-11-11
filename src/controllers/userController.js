@@ -1,13 +1,8 @@
-// src/controllers/userController.js
-
 const db = require('../../config/db');
 
-// Função para listar todos os usuários
 async function listUsers(req, res) {
   try {
-    // Executa a query no banco de dados
-    const [rows] = await db.query('SELECT * FROM users'); // 'users' é o nome da tabela no banco
-    // Renderiza a view 'users.ejs' passando os usuários
+    const [rows] = await db.query('SELECT * FROM users'); 
     res.render('users', { users: rows });
   } catch (err) {
     console.error('Erro ao buscar usuários:', err);
@@ -15,7 +10,6 @@ async function listUsers(req, res) {
   }
 }
 
-// Função para buscar usuário por ID
 async function getUserById(req, res) {
   const userId = req.params.id;
   try {
