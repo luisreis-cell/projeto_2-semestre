@@ -1,7 +1,6 @@
-const Student = require('../models/student');
+const Student = require('../models/students');
 
 module.exports = {
-  // Listar estudantes com cursos
   async listWithCourses(req, res) {
     const students = await Student.listWithCourses();
     res.render('students/list', { students });
