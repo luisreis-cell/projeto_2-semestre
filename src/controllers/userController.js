@@ -1,5 +1,4 @@
 const db = require('../../config/db');
-
 async function listUsers(req, res) {
   try {
     const [rows] = await db.query('SELECT * FROM users'); 
@@ -24,7 +23,6 @@ async function getUserById(req, res) {
   }
 }
 
-// Função para criar novo usuário
 async function createUser(req, res) {
   const { name, email, password } = req.body;
   try {
@@ -36,7 +34,6 @@ async function createUser(req, res) {
   }
 }
 
-// Função para deletar usuário
 async function deleteUser(req, res) {
   const userId = req.params.id;
   try {
