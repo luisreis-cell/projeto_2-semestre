@@ -20,10 +20,10 @@ app.set('views', path.join(__dirname, 'views'));
 app.use('/public', express.static(path.join(__dirname, 'public')));
 
 // Rotas
-const usersRouter = require('./routes/users');
-const authRouter = require('./routes/auth');
-const studentsRouter = require('./routes/students');
-const coursesRouter = require('./routes/courses');
+const usersRouter = require('./src/routes/users');
+const authRouter = require('./src/routes/auth');
+const studentsRouter = require('./src/routes/students');
+const coursesRouter = require('./src/routes/courses');
 
 app.use('/users', usersRouter);
 app.use('/auth', authRouter);
