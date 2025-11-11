@@ -1,22 +1,29 @@
-const db = require('../config/db');
+const db = require('../database/connection');
 
-module.exports = {
-  async listWithCourses() {
-    const [rows] = await db.execute(
-      `SELECT a.id, a.nome AS aluno, a.email, c.nome AS curso
-       FROM Alunos a
-       LEFT JOIN Matriculas m ON a.id = m.aluno_id
-       LEFT JOIN Cursos c ON m.curso_id = c.id`
-    );
+const Student = {
+  getAll: async () => {
+    const [rows] = await db.query("SELECT * FROM students");
     return rows;
-  }
-};
-const db = require('../config/db');
-module.exports = {
-  async create(nome, email, telefone) {
-    const [resultado] = await db.execute(
-      'INSERT INTO Alunos (nome, email, telefone) VALUES (?, ?, ?)', [nome, email, telefone]
+  },
+
+  getById: async (id) => {
+    const [rows] = await db.query("SELECT * FROM students WHERE id = ?", [id]);
+    return rows[0];
+  },
+
+  create: async (studentData) => {
+    const { name, email } = studentData;
+    const [result] = await db.query(
+      "INSERT INTO students (name, email) VALUES (?, ?)",
+      [name, email]
     );
-    return resultado.insertId;
+    return result.insertId;
+  },
+
+  delete: async (id) => {
+    const [result] = await db.query("DELETE FROM students WHERE id = ?", [id]);
+    return result.affectedRows;
   }
 };
+
+module.exports = Student;
