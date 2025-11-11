@@ -1,5 +1,13 @@
-//user.js
-const db = require('../config/db');
+const db = require('../../config/db'); // Caminho correto para o db.js
+
+// Exemplo de função para buscar usuários
+async function getUsers() {
+  const [rows] = await db.query('SELECT * FROM users');
+  return rows;
+}
+
+module.exports = { getUsers };
+
 
 module.exports = {
   async create(name, email, hash, tipo = 'aluno') {
