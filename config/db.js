@@ -1,5 +1,4 @@
 const mysql = require('mysql2/promise');
-const db = require('../../config/db');
 
 const pool = mysql.createPool({
   host: 'localhost',        // ou o host onde seu banco está rodando
