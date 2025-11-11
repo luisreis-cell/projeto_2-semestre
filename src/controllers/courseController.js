@@ -1,4 +1,4 @@
-const Course = require('../models/course');
+const Course = require('../models/courses');
 const db = require('../config/db');
 
 module.exports = {
