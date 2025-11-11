@@ -10,3 +10,4 @@ router.post('/save', courseController.createOrUpdate);
 router.get('/:id/delete', courseController.remove);
 router.get('/:id', courseController.details);
 module.exports = router;
+
