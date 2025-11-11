@@ -1,72 +1,62 @@
-const User = require('../models/user');
-const bcrypt = require('bcrypt');
+// src/controllers/userController.js
+
+const db = require('../../config/db');
+
+// Função para listar todos os usuários
+async function listUsers(req, res) {
+  try {
+    // Executa a query no banco de dados
+    const [rows] = await db.query('SELECT * FROM users'); // 'users' é o nome da tabela no banco
+    // Renderiza a view 'users.ejs' passando os usuários
+    res.render('users', { users: rows });
+  } catch (err) {
+    console.error('Erro ao buscar usuários:', err);
+    res.status(500).send('Erro ao buscar usuários');
+  }
+}
+
+// Função para buscar usuário por ID
+async function getUserById(req, res) {
+  const userId = req.params.id;
+  try {
+    const [rows] = await db.query('SELECT * FROM users WHERE id = ?', [userId]);
+    if (rows.length === 0) {
+      return res.status(404).send('Usuário não encontrado');
+    }
+    res.render('userDetail', { user: rows[0] });
+  } catch (err) {
+    console.error('Erro ao buscar usuário:', err);
+    res.status(500).send('Erro ao buscar usuário');
+  }
+}
+
+// Função para criar novo usuário
+async function createUser(req, res) {
+  const { name, email, password } = req.body;
+  try {
+    await db.query('INSERT INTO users (name, email, password) VALUES (?, ?, ?)', [name, email, password]);
+    res.redirect('/users');
+  } catch (err) {
+    console.error('Erro ao criar usuário:', err);
+    res.status(500).send('Erro ao criar usuário');
+  }
+}
+
+// Função para deletar usuário
+async function deleteUser(req, res) {
+  const userId = req.params.id;
+  try {
+    await db.query('DELETE FROM users WHERE id = ?', [userId]);
+    res.redirect('/users');
+  } catch (err) {
+    console.error('Erro ao deletar usuário:', err);
+    res.status(500).send('Erro ao deletar usuário');
+  }
+}
 
 module.exports = {
-  // Exibe formulário de login
-  showLogin(req, res) {
-    res.render('auth/login');
-  },
-
-  // Exibe formulário de registro
-  showRegister(req, res) {
-    res.render('auth/register');
-  },
-
-  // Registrar usuário
-  async register(req, res) {
-    const { name, email, password, tipo } = req.body;
-    const hash = await bcrypt.hash(password, 10);
-    await User.create(name, email, hash, tipo);
-    res.redirect('/auth/login');
-  },
-
-  // Login
-  async login(req, res) {
-    const { email, password } = req.body;
-    const user = await User.findByEmail(email);
-    if (user && await bcrypt.compare(password, user.senha)) {
-      req.session.userId = user.id;
-      req.session.userName = user.nome;
-      req.session.userTipo = user.tipo;
-      res.redirect('/');
-    } else {
-      res.render('auth/login', { error: 'Email ou senha inválidos.' });
-    }
-  },
-
-  // Logout
-  logout(req, res) {
-    req.session.destroy();
-    res.redirect('/auth/login');
-  },
-
-  // Exibir perfil do usuário logado
-  async profile(req, res) {
-    const user = await User.findById(req.session.userId);
-    res.render('users/profile', { user });
-  },
-
-  // Editar perfil
-  async editForm(req, res) {
-    const user = await User.findById(req.session.userId);
-    res.render('users/profile', { user });
-  },
-
-  async update(req, res) {
-    const { id, name, email, tipo } = req.body;
-    await User.update(id, name, email, tipo);
-    res.redirect('/users/profile');
-  },
-
-  // Remover usuário
-  async remove(req, res) {
-    await User.remove(req.params.id);
-    res.redirect('/users');
-  },
-
-  // Listar todos os usuários
-  async list(req, res) {
-    const users = await User.list();
-    res.render('users/list', { users });
-  }
+  listUsers,
+  getUserById,
+  createUser,
+  deleteUser
 };
