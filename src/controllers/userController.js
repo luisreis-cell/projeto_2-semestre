@@ -1,4 +1,4 @@
-const db = require('../../config/db');
+const db = require('../config/db');
 async function listUsers(req, res) {
   try {
     const [rows] = await db.query('SELECT * FROM users'); 
@@ -50,4 +50,29 @@ module.exports = {
   getUserById,
   createUser,
   deleteUser
+};
+function showLogin(req, res) {
+  res.send("Página de login (implementar view futuramente)");
+}
+
+function login(req, res) {
+  const { email, password } = req.body;
+  if (!email || !password) {
+    return res.status(400).send("Email e senha obrigatórios");
+  }
+
+  res.send("Login realizado (implementar autenticação futuramente)");
+}
+
+function logout(req, res) {
+  res.send("Logout realizado!");
+}
+module.exports = {
+  listUsers,
+  getUserById,
+  createUser,
+  deleteUser,
+  showLogin,
+  login,
+  logout
 };
