@@ -1,20 +1,18 @@
 const express = require('express');
 const path = require('path');
-const session = require('express-session'); // caso você use sessões
+const session = require('express-session');
 const app = express();
 
 // Middlewares
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// Configuração de sessão (necessário para login)
 app.use(session({
-  secret: 'sua_chave_secreta', // troque por uma chave segura
+  secret: 'sua_chave_secreta',
   resave: false,
   saveUninitialized: false
 }));
 
-// Views e arquivos estáticos
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use('/public', express.static(path.join(__dirname, 'public')));
@@ -30,7 +28,6 @@ app.use('/auth', authRouter);
 app.use('/students', studentsRouter);
 app.use('/courses', coursesRouter);
 
-// Rota raiz
 app.get('/', (req, res) => {
   res.render('index', { userName: req.session.userName });
 });
