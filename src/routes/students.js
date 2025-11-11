@@ -11,3 +11,4 @@ router.get('/:id/delete', studentController.remove);
 router.get('/:id', studentController.details);
 
 module.exports = router;
+
