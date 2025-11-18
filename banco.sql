@@ -37,8 +37,6 @@ CREATE TABLE Matriculas (
     FOREIGN KEY (curso_id) REFERENCES Cursos(id)
 );
 
--- Opcional: criar um usuário de aplicação e conceder permissões
--- Altere 'S3nh@Aplicacao' para uma senha segura antes de usar em produção.
 CREATE USER IF NOT EXISTS 'app_user'@'%' IDENTIFIED BY 'S3nh@Aplicacao';
 GRANT SELECT, INSERT, UPDATE, DELETE ON SistemaEscolar.* TO 'app_user'@'%';
 FLUSH PRIVILEGES;
