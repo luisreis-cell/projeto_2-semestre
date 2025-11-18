@@ -37,3 +37,15 @@ npm install
 *3*. Assegure que a tabela alunos possui uma Chave Estrangeira (id_curso) que referencia a tabela cursos.
 
 *4*. Configure as variáveis de conexão no arquivo apropriado (ex: /config/database.js ou via arquivo .env).
+
+### 4°PASSO:
+##### Executar a aplicação
+- Inicie o servidor Express. A porta padrão é tipicamente a 3000.
+
+_Se estiver usando Nodemon para desenvolvimento (recomendado)_
+
+npm run dev 
+
+_Ou execução simples_
+
+npm start
