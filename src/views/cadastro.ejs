@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cadastro</title>
+</head>
+<body>
+    <h1>Alunos cadastrados</h1>
+
+    <form method="POST" action="/alunos/novo">
+        <input name="nome" placeholder="Nome" />
+        <input name="email" placeholder="Email" />
+        <button>Cadastrar</button>
+    </form>
+
+    <ul>
+        <% if (alunos) alunos.forEach(a => { %>
+            <li><%= a.nome %> - <%= a.email %></li>
+        <% }) %>
+    </ul>
+</body>
+</html>
