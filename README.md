@@ -23,4 +23,9 @@ Siga os passos abaixo para dar certo
 git clone https://docs.github.com/pt/repositories/creating-and-managing-repositories/quickstart-for-repositories
 cd nome do projeto que você fez.
 
+### 2°PASSO:
+##### Instalar dependências
+- Instale todas as bibliotecas necessárias listadas no package.json:
+npm install
+
 
