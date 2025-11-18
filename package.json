@@ -1,0 +1,25 @@
+{
+  "name": "projeto_2-semestre",
+  "version": "1.0.0",
+  "description": "Este projeto é um **Sistema Web CRUD completo** (Alunos, Cursos, Usuários) desenvolvido em **Node.js/Express.js** com arquitetura **MVC** e banco de dados **relacional** interligado e ele implementa **autenticação segura** (sessão e bcrypt) e utiliza **EJS/Bootstrap** para um frontend totalmente **responsivo** e intuitivo.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/luisreis-cell/projeto_2-semestre.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/luisreis-cell/projeto_2-semestre/issues"
+  },
+  "homepage": "https://github.com/luisreis-cell/projeto_2-semestre#readme",
+  "dependencies": {
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "mysql2": "^3.15.3"
+  }
+}
