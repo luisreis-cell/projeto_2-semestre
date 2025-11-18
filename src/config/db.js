@@ -12,7 +12,7 @@ const db = new Sequelize(
 );
 
 db.authenticate()
-    .then(() => console.log("📌 Banco conectado"))
-    .catch(err => console.error("❌ Erro ao conectar:", err));
+    .then(() => console.log("Banco conectado"))
+    .catch(err => console.error("Erro ao conectar:", err));
 
 module.exports = db;
