@@ -9,7 +9,6 @@ module.exports = {
             next(e);
         }
     },
-
     criar: async (req, res, next) => {
         try {
             await cursoService.criar(req.body);
