@@ -1,18 +1,21 @@
-const { Sequelize } = require("sequelize");
+// db.js
+const mysql = require('mysql2/promise');
 
-const db = new Sequelize(
-    process.env.DB_NAME,
-    process.env.DB_USER,
-    process.env.DB_PASS,
-    {
-        host: process.env.DB_HOST,
-        dialect: "mysql",
-        logging: false,
-    }
-);
+const connection = mysql.createPool({
+    host: 'localhost',
+    user: 'root',         
+    password: '',         // Se você não configurou senha no XAMPP, deixe vazio
+    database: 'projeto',  // O nome do seu banco de dados
+    waitForConnections: true,
+    connectionLimit: 10,
+    queueLimit: 0
+});
 
-db.authenticate()
-    .then(() => console.log("Banco conectado"))
-    .catch(err => console.error("Erro ao conectar:", err));
+async function query(sql, params) {
+    const [results] = await connection.execute(sql, params);
+    return results;
+}
 
-module.exports = db;
+module.exports = {
+    query
+};
