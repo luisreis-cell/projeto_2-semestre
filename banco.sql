@@ -58,8 +58,11 @@ CREATE TABLE Matriculas (
     UNIQUE KEY uk_matricula (aluno_id, curso_id) 
 );
 
+<<<<<<< HEAD
 -- Opcional: criar usuário de aplicação e conceder permissões
 -- Este bloco estava perfeito para ambiente de desenvolvimento.
+=======
+>>>>>>> 52eee40caecd3db1aa98b9e7867a6fbf99e7253b
 CREATE USER IF NOT EXISTS 'app_user'@'%' IDENTIFIED BY 'S3nh@Aplicacao';
 GRANT SELECT, INSERT, UPDATE, DELETE ON SistemaEscolar.* TO 'app_user'@'%';
 FLUSH PRIVILEGES;
