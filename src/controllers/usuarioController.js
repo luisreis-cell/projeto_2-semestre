@@ -4,7 +4,6 @@ module.exports = {
     mostrarLogin: (req, res) => {
         res.render("login");
     },
-
     login: async (req, res, next) => {
         try {
             const { email, senha } = req.body;
@@ -17,11 +16,9 @@ module.exports = {
             next(e);
         }
     },
-
     cadastro: (req, res) => {
         res.render("cadastro");
     },
-
     criar: async (req, res, next) => {
         try {
             await usuarioService.criarUsuario(req.body);
