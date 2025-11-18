@@ -4,7 +4,7 @@ Este projeto é um **Sistema Web CRUD completo** (Alunos, Cursos, Usuários) des
 ---
 ## Integrantes do Grupo
 
-- Lucas Costa Pies
+- Lucas Costa Pires
 - Guilherme Gouvêa
 - Luis Guilherme dos Reis Nascimento
 - Nicolas Moreira Menecucci Insfran
@@ -18,4 +18,9 @@ Siga os passos abaixo para dar certo
 - MySQL
 
 ### 1°PASSO:
+##### Clonar o repositório
+- Substitua pelo endereço do seu projeto no GitHub
+git clone https://docs.github.com/pt/repositories/creating-and-managing-repositories/quickstart-for-repositories
+cd nome do projeto que você fez.
+
 
