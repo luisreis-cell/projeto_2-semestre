@@ -8,7 +8,7 @@ Este projeto é um **Sistema Web CRUD completo** (Alunos, Cursos, Usuários) des
 - Guilherme Gouvêa
 - Luis Guilherme dos Reis Nascimento
 - Nicolas Moreira Menecucci Insfran
-
+---
 ### Instruções de Instalação e Execução
 Siga os passos abaixo para dar certo
 
@@ -28,4 +28,12 @@ cd nome do projeto que você fez.
 - Instale todas as bibliotecas necessárias listadas no package.json:
 npm install
 
+### 3°PASSO:
+##### Configurar o banco de dados
+*1*. Crie um banco de dados vazio no seu SGBD (ex: sistema_academico).
 
+*2*. Crie as tabelas: users, cursos e alunos.
+
+*3*. Assegure que a tabela alunos possui uma Chave Estrangeira (id_curso) que referencia a tabela cursos.
+
+*4*. Configure as variáveis de conexão no arquivo apropriado (ex: /config/database.js ou via arquivo .env).
