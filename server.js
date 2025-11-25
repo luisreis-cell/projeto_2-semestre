@@ -9,7 +9,9 @@ app.set('views', path.join(__dirname, 'views'));
 
 const alunoRoutes = require('./routes/alunoRoutes');
 const cursoRoutes = require('./routes/cursoRoutes');
+const usuarioRoutes = require('./routes/usuarioRoutes');
 
+app.use('/usuario', usuarioRoutes);
 app.use('/aluno', alunoRoutes);
 app.use('/curso', cursoRoutes);
 
