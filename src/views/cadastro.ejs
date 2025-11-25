@@ -1,23 +1,22 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Alunos</title>
+    <title>Cadastro</title>
 </head>
 <body>
-    <h1>Alunos cadastrados</h1>
 
-    <form method="POST" action="/aluno/novo">
+    <h1>Cadastro de Usuário</h1>
+
+    <form method="POST" action="/usuario/cadastro">
         <input name="nome" placeholder="Nome" required />
-        <input name="idade" placeholder="Idade" type="number" required />
+        <input name="email" type="email" placeholder="E-mail" required />
+        <input name="senha" type="password" placeholder="Senha" required />
         <button type="submit">Cadastrar</button>
     </form>
 
-    <ul>
-        <% if (alunos) alunos.forEach(a => { %>
-            <li>
-                <%= a.nome %> - <%= a.idade %> anos
-            </li>
-        <% }) %>
-    </ul>
+    <p>
+        Já tem conta? <a href="/usuario/login">Faça login</a>
+    </p>
+
 </body>
 </html>
