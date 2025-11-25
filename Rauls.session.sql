@@ -1,4 +1,8 @@
-USE projeto; 
+-- 0. Crie o seu próprio banco de dados (Execute apenas uma vez)
+CREATE DATABASE IF NOT EXISTS meu_projeto;
+
+-- Mude para o seu banco de dados, e NÃO para o banco de dados 'mysql'
+USE meu_projeto;
 
 -- 1. Cria a tabela 'usuarios'
 CREATE TABLE usuarios (
