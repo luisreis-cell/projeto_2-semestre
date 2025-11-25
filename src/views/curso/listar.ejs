@@ -1,1 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lista de Cursos</title>
+</head>
+<body>
+    <h1>Cursos cadastrados</h1>
+
+    <a href="/curso/novo">Cadastrar novo curso</a>
+
+    <ul>
+        <% if (cursos && cursos.length > 0) { %>
+            <% cursos.forEach(c => { %>
+                <li>
+                    <%= c.nome %> - <%= c.carga_horaria %> horas
+                    <a href="/curso/<%= c.id %>/editar">Editar</a>
+                    <a href="/curso/<%= c.id %>/deletar">Excluir</a>
+                </li>
+            <% }) %>
+        <% } else { %>
+            <li>Nenhum curso cadastrado.</li>
+        <% } %>
+    </ul>
+</body>
+</html>
 
