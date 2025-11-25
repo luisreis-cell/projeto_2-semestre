@@ -1,30 +1,38 @@
-const usuarioService = require("../services/usuarioService");
+const Usuario = require('../models/usuario');
 
 module.exports = {
-    mostrarLogin: (req, res) => {
-        res.render("login");
+
+    formLogin(req, res) {
+        res.render('login');
     },
-    login: async (req, res, next) => {
-        try {
-            const { email, senha } = req.body;
-            const usuario = await usuarioService.autenticar(email, senha);
-            if (!usuario) return res.status(401).send("Credenciais inválidas");
-            
-            req.session.user = usuario;
-            res.redirect("/alunos");
-        } catch (e) {
-            next(e);
+
+    async login(req, res) {
+        const { email, senha } = req.body;
+
+        const usuario = await Usuario.buscarPorEmail(email);
+
+        if (!usuario || usuario.senha !== senha) {
+            return res.send("Usuário ou senha incorretos");
         }
+
+        req.session.usuario = usuario;
+        res.redirect('/aluno');
     },
-    cadastro: (req, res) => {
-        res.render("cadastro");
+
+    formCadastro(req, res) {
+        res.render('cadastro');
     },
-    criar: async (req, res, next) => {
-        try {
-            await usuarioService.criarUsuario(req.body);
-            res.redirect("/usuarios/login");
-        } catch (e) {
-            next(e);
-        }
+
+    async cadastrar(req, res) {
+        const { nome, email, senha } = req.body;
+
+        await Usuario.criar({ nome, email, senha });
+
+        res.redirect('/usuario/login');
+    },
+
+    logout(req, res) {
+        req.session.destroy();
+        res.redirect('/usuario/login');
     }
 };
