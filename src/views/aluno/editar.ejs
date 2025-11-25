@@ -1,1 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Editar Aluno</title>
+</head>
+<body>
+    <h1>Editar Aluno</h1>
+
+    <form method="POST" action="/aluno/<%= aluno.id %>/editar">
+        <input name="nome" value="<%= aluno.nome %>" placeholder="Nome" required />
+        <input name="idade" value="<%= aluno.idade %>" type="number" placeholder="Idade" required />
+        <button type="submit">Salvar</button>
+    </form>
+
+    <a href="/aluno">Voltar</a>
+</body>
+</html>
 
