@@ -1,26 +1,26 @@
+let alunos = [];
+let idAtual = 1;
 
-const db = require('../config/db');
-
-const Aluno = {
-    create: (nome, curso_id) => {
-        const query = 'INSERT INTO alunos (nome, curso_id) VALUES (?, ?)';
-        return db.promise().execute(query, [nome, curso_id]);
+module.exports = {
+    listar() {
+        return alunos;
     },
-
-    findAll: () => {
-        const query = 'SELECT alunos.nome, cursos.nome AS curso FROM alunos JOIN cursos ON alunos.curso_id = cursos.id';
-        return db.promise().query(query);
+    buscarPorId(id) {
+        return alunos.find(a => a.id == id);
     },
-
-    update: (id, nome, curso_id) => {
-        const query = 'UPDATE alunos SET nome = ?, curso_id = ? WHERE id = ?';
-        return db.promise().execute(query, [nome, curso_id, id]);
+    criar({ nome, idade }) {
+        const novo = { id: idAtual++, nome, idade };
+        alunos.push(novo);
+        return novo;
     },
-
-    delete: (id) => {
-        const query = 'DELETE FROM alunos WHERE id = ?';
-        return db.promise().execute(query, [id]);
+    editar(id, { nome, idade }) {
+        const aluno = alunos.find(a => a.id == id);
+        if (!aluno) return null;
+        aluno.nome = nome;
+        aluno.idade = idade;
+        return aluno;
+    },
+    deletar(id) {
+        alunos = alunos.filter(a => a.id != id);
     }
 };
-
-module.exports = Aluno;
