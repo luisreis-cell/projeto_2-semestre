@@ -1,30 +1,38 @@
 const Aluno = require('../models/aluno');
 
-exports.create = (req, res) => {
-    const { nome, curso_id } = req.body;
-    Aluno.create(nome, curso_id)
-        .then(result => res.redirect('/alunos'))
-        .catch(err => res.status(500).send(err));
-};
+module.exports = {
+    
+    async listar(req, res) {
+        const alunos = await Aluno.listar();
+        res.render('aluno/listar', { alunos });
+    },
 
-exports.list = (req, res) => {
-    Aluno.findAll()
-        .then(([rows]) => res.render('alunos', { alunos: rows }))
-        .catch(err => res.status(500).send(err));
-};
+    async formNovo(req, res) {
+        res.render('aluno/novo');
+    },
 
-exports.update = (req, res) => {
-    const { nome, curso_id } = req.body;
-    const { id } = req.params;
-    Aluno.update(id, nome, curso_id)
-        .then(result => res.redirect('/alunos'))
-        .catch(err => res.status(500).send(err));
-};
+    async criar(req, res) {
+        const { nome, idade } = req.body;
 
-exports.delete = (req, res) => {
-    const { id } = req.params;
-    Aluno.delete(id)
-        .then(result => res.redirect('/alunos'))
-        .catch(err => res.status(500).send(err));
-};
+        await Aluno.criar({ nome, idade });
 
+        res.redirect('/aluno');
+    },
+
+    async formEditar(req, res) {
+        const aluno = await Aluno.buscarPorId(req.params.id);
+        res.render('aluno/editar', { aluno });
+    },
+
+    async editar(req, res) {
+        const { nome, idade } = req.body;
+        await Aluno.editar(req.params.id, { nome, idade });
+
+        res.redirect('/aluno');
+    },
+
+    async deletar(req, res) {
+        await Aluno.deletar(req.params.id);
+        res.redirect('/aluno');
+    }
+};
