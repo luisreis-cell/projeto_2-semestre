@@ -2,8 +2,6 @@ require("dotenv").config();
 const express = require("express");
 const app = express();
 const path = require("path");
-const session = require("./config/session");
-const errorHandler = require("./middlewares/errorHandler");
 
 const alunoRoutes = require("./routes/alunoRoutes");
 const cursoRoutes = require("./routes/cursoRoutes");
