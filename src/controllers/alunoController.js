@@ -1,18 +1,8 @@
-module.exports = {
-    listar: async (req, res, next) => {
-        try {
-            const alunos = await alunoService.listar();
-            res.render("cadastro", { alunos });
-        } catch (e) {
-            next(e);
-        }
-    },
-    criar: async (req, res, next) => {
-        try {
-            await alunoService.criar(req.body);
-            res.redirect("/alunos");
-        } catch (e) {
-            next(e);
-        }
-    }
+const Aluno = require('../models/aluno');
+
+exports.create = (req, res) => {
+    const { nome, curso_id } = req.body;
+    Aluno.create(nome, curso_id)
+        .then(result => res.redirect('/alunos'))
+        .catch(err => res.status(500).send(err));
 };
