@@ -1,26 +1,32 @@
-let cursos = [];
-let idAtual = 1;
+const pool = require('../config/db');
 
 module.exports = {
-    listar() {
-        return cursos;
+    async listar() {
+        const [rows] = await pool.query('SELECT id, nome, descricao, duracao_meses, criado_em FROM cursos');
+        // adicionar alias carga_horaria para compatibilidade
+        return rows.map(r => ({ ...r, carga_horaria: r.duracao_meses }));
     },
-    buscarPorId(id) {
-        return cursos.find(c => c.id == id);
+    async buscarPorId(id) {
+        const [rows] = await pool.query('SELECT id, nome, descricao, duracao_meses FROM cursos WHERE id = ?', [id]);
+        const row = rows[0] || null;
+        if (!row) return null;
+        row.carga_horaria = row.duracao_meses;
+        return row;
     },
-    criar({ nome, carga_horaria }) {
-        const novo = { id: idAtual++, nome, carga_horaria };
-        cursos.push(novo);
-        return novo;
+    async criar({ nome, descricao, duracao_meses = 0 }) {
+        // aceitar carga_horaria por compatibilidade
+        if (typeof nome === 'object') {
+            // noop
+        }
+        const [result] = await pool.query('INSERT INTO cursos (nome, descricao, duracao_meses) VALUES (?, ?, ?)', [nome, descricao, duracao_meses]);
+        return { id: result.insertId, nome, descricao, duracao_meses, carga_horaria: duracao_meses };
     },
-    editar(id, { nome, carga_horaria }) {
-        const curso = cursos.find(c => c.id == id);
-        if (!curso) return null;
-        curso.nome = nome;
-        curso.carga_horaria = carga_horaria;
-        return curso;
+    async editar(id, { nome, descricao, duracao_meses }) {
+        await pool.query('UPDATE cursos SET nome = ?, descricao = ?, duracao_meses = ? WHERE id = ?', [nome, descricao, duracao_meses, id]);
+        return this.buscarPorId(id);
     },
-    deletar(id) {
-        cursos = cursos.filter(c => c.id != id);
+    async deletar(id) {
+        await pool.query('DELETE FROM cursos WHERE id = ?', [id]);
+        return;
     }
 };

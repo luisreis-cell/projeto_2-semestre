@@ -1,0 +1,62 @@
+<%- include('../partials/header') %>
+
+<main class="container py-5">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="mb-0">Cursos cadastrados</h2>
+    <% if (typeof usuario !== 'undefined' && usuario && usuario.papel === 'admin') { %>
+      <a class="btn btn-success" href="/curso/novo">+ Novo Curso</a>
+    <% } else if (!usuario) { %>
+      <a class="btn btn-success disabled" href="/usuario/login" aria-disabled="true">+ Novo Curso</a>
+    <% } else { %>
+      <a class="btn btn-success disabled" href="#" aria-disabled="true">+ Novo Curso</a>
+    <% } %>
+  </div>
+
+  <% if (cursos && cursos.length > 0) { %>
+    <% if (messages && messages.success && messages.success.length) { %>
+      <% messages.success.forEach(m => { %>
+        <div class="alert alert-success"><%= m %></div>
+      <% }) %>
+    <% } %>
+    <div class="table-responsive">
+      <table class="table table-striped table-hover align-middle">
+        <thead class="table-primary">
+          <tr>
+            <th>Id</th>
+            <th>Nome</th>
+            <th>Descrição</th>
+            <th>Dur. (meses)</th>
+            <th class="text-end">Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+        <% cursos.forEach(c => { %>
+          <tr>
+            <td><%= c.id %></td>
+            <td><%= c.nome %></td>
+            <td><%= c.descricao ? c.descricao : '-' %></td>
+            <td><%= c.carga_horaria || c.duracao_meses %></td>
+            <td class="text-end">
+              <% if (!usuario) { %>
+                <a class="btn btn-sm btn-primary me-2 disabled" href="/usuario/login" aria-disabled="true">Editar</a>
+                <a class="btn btn-sm btn-danger disabled" href="/usuario/login" aria-disabled="true">Excluir</a>
+              <% } else if (typeof usuario !== 'undefined' && usuario && usuario.papel === 'admin') { %>
+                <a class="btn btn-sm btn-primary me-2" href="/curso/<%= c.id %>/editar">Editar</a>
+                <a class="btn btn-sm btn-danger" href="/curso/<%= c.id %>/deletar" onclick="return confirm('Excluir este curso?')">Excluir</a>
+              <% } else { %>
+                <span class="text-muted small">Sem permissão</span>
+              <% } %>
+            </td>
+          </tr>
+        <% }) %>
+        </tbody>
+      </table>
+    </div>
+  <% } else { %>
+    <div class="alert alert-info">Nenhum curso cadastrado.</div>
+  <% } %>
+
+</main>
+
+<%- include('../partials/footer') %>
+

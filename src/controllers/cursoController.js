@@ -12,10 +12,11 @@ module.exports = {
     },
 
     async criar(req, res) {
-        const { nome, carga_horaria } = req.body;
+        const { nome, descricao, duracao_meses } = req.body;
 
-        await Curso.criar({ nome, carga_horaria });
+        await Curso.criar({ nome, descricao, duracao_meses: Number(duracao_meses) });
 
+        req.flash('success', 'Curso criado com sucesso.');
         res.redirect('/curso');
     },
 
@@ -25,15 +26,17 @@ module.exports = {
     },
 
     async editar(req, res) {
-        const { nome, carga_horaria } = req.body;
+        const { nome, descricao, duracao_meses } = req.body;
 
-        await Curso.editar(req.params.id, { nome, carga_horaria });
+        await Curso.editar(req.params.id, { nome, descricao, duracao_meses: Number(duracao_meses) });
 
+        req.flash('success', 'Curso atualizado com sucesso.');
         res.redirect('/curso');
     },
 
     async deletar(req, res) {
         await Curso.deletar(req.params.id);
+        req.flash('success', 'Curso excluído.');
         res.redirect('/curso');
     }
 };

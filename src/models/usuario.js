@@ -1,19 +1,20 @@
-let usuarios = [];
-let idAtual = 1;
+const pool = require('../config/db');
 
 module.exports = {
-    listar() {
-        return usuarios;
+    async listar() {
+        const [rows] = await pool.query('SELECT id, nome, email, papel, criado_em FROM usuarios');
+        return rows;
     },
-    buscarPorId(id) {
-        return usuarios.find(u => u.id == id);
+    async buscarPorId(id) {
+        const [rows] = await pool.query('SELECT id, nome, email, senha, papel FROM usuarios WHERE id = ?', [id]);
+        return rows[0] || null;
     },
-    buscarPorEmail(email) {
-        return usuarios.find(u => u.email === email);
+    async buscarPorEmail(email) {
+        const [rows] = await pool.query('SELECT id, nome, email, senha, papel FROM usuarios WHERE email = ?', [email]);
+        return rows[0] || null;
     },
-    criar({ nome, email, senha }) {
-        const novo = { id: idAtual++, nome, email, senha };
-        usuarios.push(novo);
-        return novo;
+    async criar({ nome, email, senha, papel = 'user' }) {
+        const [result] = await pool.query('INSERT INTO usuarios (nome, email, senha, papel) VALUES (?, ?, ?, ?)', [nome, email, senha, papel]);
+        return { id: result.insertId, nome, email, papel };
     }
 };

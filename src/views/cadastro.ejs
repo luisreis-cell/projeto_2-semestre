@@ -1,22 +1,35 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Cadastro</title>
-</head>
-<body>
+<%- include('partials/header') %>
 
-    <h1>Cadastro de Usuário</h1>
+<main class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h3 class="card-title mb-4">Criar conta</h3>
+                    <form method="POST" action="/usuario/cadastro">
+                        <% if (messages && messages.error && messages.error.length) { %>
+                            <% messages.error.forEach(m => { %>
+                                <div class="alert alert-danger"><%= m %></div>
+                            <% }) %>
+                        <% } %>
+                        <div class="mb-3">
+                            <input class="form-control" name="nome" placeholder="Nome" required />
+                        </div>
+                        <div class="mb-3">
+                            <input class="form-control" name="email" type="email" placeholder="E-mail" required />
+                        </div>
+                        <div class="mb-3">
+                            <input class="form-control" name="senha" type="password" placeholder="Senha" required />
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <a href="/usuario/login">Já tenho conta</a>
+                            <button class="btn btn-primary" type="submit">Cadastrar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
 
-    <form method="POST" action="/usuario/cadastro">
-        <input name="nome" placeholder="Nome" required />
-        <input name="email" type="email" placeholder="E-mail" required />
-        <input name="senha" type="password" placeholder="Senha" required />
-        <button type="submit">Cadastrar</button>
-    </form>
-
-    <p>
-        Já tem conta? <a href="/usuario/login">Faça login</a>
-    </p>
-
-</body>
-</html>
+<%- include('partials/footer') %>

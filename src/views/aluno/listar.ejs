@@ -1,26 +1,62 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Lista de Alunos</title>
-</head>
-<body>
-    <h1>Alunos cadastrados</h1>
+<%- include('../partials/header') %>
 
-    <a href="/aluno/novo">Cadastrar novo aluno</a>
-
-    <ul>
-        <% if (alunos && alunos.length > 0) { %>
-            <% alunos.forEach(a => { %>
-                <li>
-                    <%= a.nome %> - <%= a.idade %> anos 
-                    <a href="/aluno/<%= a.id %>/editar">Editar</a>
-                    <a href="/aluno/<%= a.id %>/deletar">Excluir</a>
-                </li>
-            <% }) %>
+<main class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="mb-0">Alunos cadastrados</h2>
+        <% if (typeof usuario !== 'undefined' && usuario && (usuario.papel === 'admin' || usuario.papel === 'professor')) { %>
+            <a class="btn btn-success" href="/aluno/novo">+ Novo Aluno</a>
+        <% } else if (!usuario) { %>
+            <a class="btn btn-success disabled" href="/usuario/login" aria-disabled="true">+ Novo Aluno</a>
         <% } else { %>
-            <li>Nenhum aluno cadastrado.</li>
+            <a class="btn btn-success disabled" href="#" aria-disabled="true">+ Novo Aluno</a>
         <% } %>
-    </ul>
-</body>
-</html>
+    </div>
+
+    <% if (alunos && alunos.length > 0) { %>
+        <% if (messages && messages.success && messages.success.length) { %>
+            <% messages.success.forEach(m => { %>
+                <div class="alert alert-success"><%= m %></div>
+            <% }) %>
+        <% } %>
+        <div class="table-responsive">
+            <table class="table table-striped table-hover align-middle">
+                <thead class="table-primary">
+                    <tr>
+                        <th>Nome</th>
+                        <th>Idade</th>
+                        <th>Matrícula</th>
+                        <th>Curso</th>
+                        <th class="text-end">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <% alunos.forEach(a => { %>
+                    <tr>
+                        <td><%= a.nome %></td>
+                        <td><%= a.idade || '-' %></td>
+                        <td><%= a.matricula %></td>
+                        <td><%= a.curso_nome || '-' %></td>
+                        <td class="text-end">
+                            <% if (!usuario) { %>
+                                <a class="btn btn-sm btn-primary me-2 disabled" href="/usuario/login" aria-disabled="true">Editar</a>
+                                <a class="btn btn-sm btn-danger disabled" href="/usuario/login" aria-disabled="true">Excluir</a>
+                              <% } else if (typeof usuario !== 'undefined' && usuario && (usuario.papel === 'admin' || usuario.papel === 'professor')) { %>
+                                <a class="btn btn-sm btn-primary me-2" href="/aluno/<%= a.id %>/editar">Editar</a>
+                                <a class="btn btn-sm btn-danger" href="/aluno/<%= a.id %>/deletar" onclick="return confirm('Excluir este aluno?')">Excluir</a>
+                            <% } else { %>
+                                <span class="text-muted small">Sem permissão</span>
+                            <% } %>
+                        </td>
+                    </tr>
+                <% }) %>
+                </tbody>
+            </table>
+        </div>
+    <% } else { %>
+        <div class="alert alert-info">Nenhum aluno cadastrado.</div>
+    <% } %>
+
+</main>
+
+<%- include('../partials/footer') %>
 

@@ -27,6 +27,7 @@ module.exports = {
 
             await Aluno.criar({ nome, idade, curso_id });
 
+            req.flash('success', 'Aluno criado com sucesso.');
             res.redirect('/aluno');
         } catch (erro) {
             res.status(500).send("Erro ao criar aluno.");
@@ -48,6 +49,7 @@ module.exports = {
 
             await Aluno.editar(req.params.id, { nome, idade, curso_id });
 
+            req.flash('success', 'Aluno atualizado com sucesso.');
             res.redirect('/aluno');
         } catch (erro) {
             res.status(500).send("Erro ao editar aluno.");
@@ -57,6 +59,7 @@ module.exports = {
     async deletar(req, res) {
         try {
             await Aluno.deletar(req.params.id);
+            req.flash('success', 'Aluno excluído.');
             res.redirect('/aluno');
         } catch (erro) {
             res.status(500).send("Erro ao excluir aluno.");

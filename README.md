@@ -30,22 +30,29 @@ npm install
 
 ### 3°PASSO:
 ##### Configurar o banco de dados
-*1*. Crie um banco de dados vazio no seu SGBD (ex: sistema_academico).
+*1*. Crie um banco de dados ou use o script SQL provido (`Rauls.session.sql`).
 
-*2*. Crie as tabelas: users, cursos e alunos.
+*2*. Configure as variáveis de conexão criando um arquivo `.env` baseado em `.env.example` e ajustando `DB_HOST`, `DB_USER`, `DB_PASSWORD` e `DB_NAME`.
 
-*3*. Assegure que a tabela alunos possui uma Chave Estrangeira (id_curso) que referencia a tabela cursos.
+*3*. Rode o seed para criar tabelas e inserir dados de exemplo (gera hashes bcrypt automaticamente):
 
-*4*. Configure as variáveis de conexão no arquivo apropriado (ex: /config/database.js ou via arquivo .env).
+```powershell
+npm install
+npm run seed
+```
+
+Isso executará o script `Rauls.session.sql` e populará o banco com cursos, alunos e usuários de exemplo.
 
 ### 4°PASSO:
 ##### Executar a aplicação
 - Inicie o servidor Express. A porta padrão é tipicamente a 3000.
 
-_Se estiver usando Nodemon para desenvolvimento (recomendado)_
+_Iniciar a aplicação:_
 
-npm run dev 
-
-_Ou execução simples_
-
+```powershell
 npm start
+```
+
+Observações:
+- Antes de iniciar, crie `.env` e rode `npm run seed` para popular o banco.
+- Se quiser usar `nodemon`, adicione-o como devDependency e um script `dev` no `package.json`.

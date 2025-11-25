@@ -1,3 +1,42 @@
+<%- include('../partials/header') %>
+
+<main class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h3 class="card-title mb-4">Editar aluno</h3>
+          <form action="/aluno/<%= aluno.id %>/editar" method="POST">
+            <div class="mb-3">
+              <label class="form-label">Nome</label>
+              <input class="form-control" name="nome" value="<%= aluno.nome %>" required />
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Idade</label>
+              <input class="form-control" name="idade" type="number" value="<%= aluno.idade %>" />
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Curso</label>
+              <select class="form-select" name="curso_id">
+                <option value="">-- Selecione --</option>
+                <% cursos.forEach(c => { %>
+                  <option value="<%= c.id %>" <%= aluno.curso_id == c.id ? 'selected' : '' %>><%= c.nome %></option>
+                <% }) %>
+              </select>
+            </div>
+            <div class="d-flex justify-content-between">
+              <a class="btn btn-outline-secondary" href="/aluno">Cancelar</a>
+              <button class="btn btn-primary" type="submit">Salvar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<%- include('../partials/footer') %>
+
 <!DOCTYPE html>
 <html>
 <head>

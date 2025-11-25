@@ -1,21 +1,32 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Login</title>
-</head>
-<body>
+<%- include('partials/header') %>
 
-    <h1>Login</h1>
+<main class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h3 class="card-title mb-4">Entrar</h3>
+                    <form method="POST" action="/usuario/login">
+                        <% if (messages && messages.error && messages.error.length) { %>
+                            <% messages.error.forEach(m => { %>
+                                <div class="alert alert-danger"><%= m %></div>
+                            <% }) %>
+                        <% } %>
+                        <div class="mb-3">
+                            <input class="form-control" name="email" type="email" placeholder="E-mail" required />
+                        </div>
+                        <div class="mb-3">
+                            <input class="form-control" name="senha" type="password" placeholder="Senha" required />
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <a href="/usuario/cadastro">Criar conta</a>
+                            <button class="btn btn-primary" type="submit">Entrar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
 
-    <form method="POST" action="/usuario/login">
-        <input name="email" type="email" placeholder="E-mail" required />
-        <input name="senha" type="password" placeholder="Senha" required />
-        <button type="submit">Entrar</button>
-    </form>
-
-    <p>
-        Não tem conta? <a href="/usuario/cadastro">Cadastre-se</a>
-    </p>
-
-</body>
-</html>
+<%- include('partials/footer') %>
