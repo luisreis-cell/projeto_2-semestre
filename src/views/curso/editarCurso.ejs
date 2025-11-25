@@ -1,1 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Editar Curso</title>
+</head>
+<body>
+    <h1>Editar Curso</h1>
+
+    <form method="POST" action="/curso/<%= curso.id %>/editar">
+        <input name="nome" value="<%= curso.nome %>" placeholder="Nome do curso" required />
+        <input name="carga_horaria" value="<%= curso.carga_horaria %>" type="number" placeholder="Carga horária" required />
+        <button type="submit">Salvar</button>
+    </form>
+
+    <a href="/curso">Voltar</a>
+</body>
+</html>
 
