@@ -5,8 +5,8 @@ const cursoController = require('../controllers/cursoController');
 router.get('/', cursoController.listar);
 router.get('/novo', cursoController.formNovo);
 router.post('/novo', cursoController.criar);
-router.get('/editar/:id', cursoController.formEditar);
-router.post('/editar/:id', cursoController.editar);
-router.get('/deletar/:id', cursoController.deletar);
+router.get('/:id/editar', cursoController.formEditar);
+router.post('/:id/editar', cursoController.editar);
+router.get('/:id/deletar', cursoController.deletar);
 
 module.exports = router;
