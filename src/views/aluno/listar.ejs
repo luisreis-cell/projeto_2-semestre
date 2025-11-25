@@ -1,1 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lista de Alunos</title>
+</head>
+<body>
+    <h1>Alunos cadastrados</h1>
+
+    <a href="/aluno/novo">Cadastrar novo aluno</a>
+
+    <ul>
+        <% if (alunos && alunos.length > 0) { %>
+            <% alunos.forEach(a => { %>
+                <li>
+                    <%= a.nome %> - <%= a.idade %> anos 
+                    <a href="/aluno/<%= a.id %>/editar">Editar</a>
+                    <a href="/aluno/<%= a.id %>/deletar">Excluir</a>
+                </li>
+            <% }) %>
+        <% } else { %>
+            <li>Nenhum aluno cadastrado.</li>
+        <% } %>
+    </ul>
+</body>
+</html>
 
