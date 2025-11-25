@@ -9,7 +9,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.use(session({
-  secret: 'meuSegredo', // Troque por um segredo mais seguro
+  secret: 'meuSegredo', 
   resave: false,
   saveUninitialized: true,
 }));
