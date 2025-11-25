@@ -1,23 +1,34 @@
 const express = require('express');
+const path = require('path');
+const session = require('express-session');
+
 const app = express();
-const sessionConfig = require('./config/session');
-const alunoRoutes = require('./routes/alunoRoutes');
-const cursoRoutes = require('./routes/cursoRoutes');
-const usuarioRoutes = require('./routes/usuarioRoutes');
+const port = process.env.PORT || 3000;
 
-sessionConfig(app);
-
-app.set('view engine', 'ejs');
-app.set('views', './src/views');
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use('/alunos', alunoRoutes);
-app.use('/cursos', cursoRoutes);
-app.use('/usuarios', usuarioRoutes);
+
+app.use(session({
+  secret: 'meuSegredo', // Troque por um segredo mais seguro
+  resave: false,
+  saveUninitialized: true,
+}));
+
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'src', 'views'));
+
+const alunoRoutes = require('./src/routes/alunoRoutes');
+const cursoRoutes = require('./src/routes/cursoRoutes');
+const usuarioRoutes = require('./src/routes/usuarioRoutes');
+
+app.use('/aluno', alunoRoutes);
+app.use('/curso', cursoRoutes);
+app.use('/usuario', usuarioRoutes);
+
 app.get('/', (req, res) => {
-    res.render('index');
-});
-const PORT = 3000;
-app.listen(PORT, () => {
-    console.log(`Servidor rodando na porta ${PORT}`);
+  res.render('login');
+});                                                                                                                                                      
+app.use(express.static(path.join(__dirname, 'public')));
+app.listen(port, () => {
+  console.log(`Servidor rodando na porta ${port}`);
 });
