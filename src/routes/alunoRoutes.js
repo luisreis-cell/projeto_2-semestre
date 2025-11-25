@@ -1,9 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const alunoController = require('../controllers/alunoController');
+router.get('/', alunoController.listar);   
+router.get('/novo', alunoController.formNovo);   
+router.post('/novo', alunoController.criar);   
+router.get('/editar/:id', alunoController.formEditar);
+router.post('/editar/:id', alunoController.editar);   
+router.get('/deletar/:id', alunoController.deletar);   
 
-router.get('/', alunoController.list);
-router.post('/add', alunoController.create);
-router.put('/edit/:id', alunoController.update);
-router.delete('/delete/:id', alunoController.delete);
 module.exports = router;
