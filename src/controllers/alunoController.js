@@ -1,5 +1,3 @@
-const alunoService = require("../services/alunoService");
-
 module.exports = {
     listar: async (req, res, next) => {
         try {
