@@ -1,29 +1,18 @@
-// server.js
 const express = require('express');
-const db = require('./src/config/db'); 
+const path = require('path');
 const app = express();
-const PORT = 3000;
 
-app.set('view engine', 'ejs'); 
+app.use(express.urlencoded({ extended: true }));
 
-// Rota principal para listar os usuários
-app.get('/', async (req, res) => {
-    try {
-        // Busca todos os usuários na tabela 'usuarios'
-        const usuarios = await db.query('SELECT nome, email FROM usuarios'); 
-        
-        // Renderiza a view 'index.ejs' e envia o array de usuários para ela
-        res.render('index', { 
-            titulo: 'Lista de Usuários do DB',
-            usuarios: usuarios 
-        });
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
 
-    } catch (error) {
-        console.error('Erro ao buscar usuários:', error);
-        res.status(500).send('Erro interno do servidor ao acessar o DB.');
-    }
-});
+const alunoRoutes = require('./routes/alunoRoutes');
+const cursoRoutes = require('./routes/cursoRoutes');
 
-app.listen(PORT, () => {
-    console.log(`Servidor rodando em http://localhost:${PORT}`);
+app.use('/aluno', alunoRoutes);
+app.use('/curso', cursoRoutes);
+
+app.listen(3000, () => {
+    console.log('Servidor rodando na porta 3000');
 });
