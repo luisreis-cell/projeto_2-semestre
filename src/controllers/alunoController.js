@@ -1,38 +1,72 @@
 const Aluno = require('../models/aluno');
+const Curso = require('../models/curso'); // relacionamento
 
 module.exports = {
-    
+
+    // LISTAR alunos com JOIN (curso associado)
     async listar(req, res) {
-        const alunos = await Aluno.listar();
-        res.render('aluno/listar', { alunos });
+        try {
+            const alunos = await Aluno.listarComCurso(); // <-- JOIN
+            res.render('aluno/listar', { alunos });
+        } catch (erro) {
+            res.status(500).send("Erro ao listar alunos.");
+        }
     },
 
+    // FORMULÁRIO de novo aluno (com lista de cursos)
     async formNovo(req, res) {
-        res.render('aluno/novo');
+        try {
+            const cursos = await Curso.listar();
+            res.render('aluno/novo', { cursos });
+        } catch (erro) {
+            res.status(500).send("Erro ao abrir formulário de aluno.");
+        }
     },
 
+    // CRIAR aluno
     async criar(req, res) {
-        const { nome, idade } = req.body;
+        try {
+            const { nome, idade, curso_id } = req.body;
 
-        await Aluno.criar({ nome, idade });
+            await Aluno.criar({ nome, idade, curso_id });
 
-        res.redirect('/aluno');
+            res.redirect('/aluno');
+        } catch (erro) {
+            res.status(500).send("Erro ao criar aluno.");
+        }
     },
 
+    // FORM editar (com cursos)
     async formEditar(req, res) {
-        const aluno = await Aluno.buscarPorId(req.params.id);
-        res.render('aluno/editar', { aluno });
+        try {
+            const aluno = await Aluno.buscarPorId(req.params.id);
+            const cursos = await Curso.listar(); // mantém select preenchido
+            res.render('aluno/editar', { aluno, cursos });
+        } catch (erro) {
+            res.status(500).send("Erro ao abrir formulário de edição.");
+        }
     },
 
+    // EDITAR aluno
     async editar(req, res) {
-        const { nome, idade } = req.body;
-        await Aluno.editar(req.params.id, { nome, idade });
+        try {
+            const { nome, idade, curso_id } = req.body;
 
-        res.redirect('/aluno');
+            await Aluno.editar(req.params.id, { nome, idade, curso_id });
+
+            res.redirect('/aluno');
+        } catch (erro) {
+            res.status(500).send("Erro ao editar aluno.");
+        }
     },
 
+    // EXCLUIR aluno
     async deletar(req, res) {
-        await Aluno.deletar(req.params.id);
-        res.redirect('/aluno');
+        try {
+            await Aluno.deletar(req.params.id);
+            res.redirect('/aluno');
+        } catch (erro) {
+            res.status(500).send("Erro ao excluir aluno.");
+        }
     }
 };
