@@ -1,9 +1,8 @@
 const Aluno = require('../models/aluno');
-const Curso = require('../models/curso'); // relacionamento
+const Curso = require('../models/curso'); 
 
 module.exports = {
 
-    // LISTAR alunos com JOIN (curso associado)
     async listar(req, res) {
         try {
             const alunos = await Aluno.listarComCurso(); // <-- JOIN
@@ -13,7 +12,6 @@ module.exports = {
         }
     },
 
-    // FORMULÁRIO de novo aluno (com lista de cursos)
     async formNovo(req, res) {
         try {
             const cursos = await Curso.listar();
@@ -23,7 +21,6 @@ module.exports = {
         }
     },
 
-    // CRIAR aluno
     async criar(req, res) {
         try {
             const { nome, idade, curso_id } = req.body;
@@ -35,8 +32,6 @@ module.exports = {
             res.status(500).send("Erro ao criar aluno.");
         }
     },
-
-    // FORM editar (com cursos)
     async formEditar(req, res) {
         try {
             const aluno = await Aluno.buscarPorId(req.params.id);
@@ -47,7 +42,6 @@ module.exports = {
         }
     },
 
-    // EDITAR aluno
     async editar(req, res) {
         try {
             const { nome, idade, curso_id } = req.body;
@@ -60,7 +54,6 @@ module.exports = {
         }
     },
 
-    // EXCLUIR aluno
     async deletar(req, res) {
         try {
             await Aluno.deletar(req.params.id);
