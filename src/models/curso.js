@@ -14,3 +14,9 @@ module.exports = {
           [id]
         );
   
+      const row = rows[0] || null;
+        if (!row) return null;
+        row.carga_horaria = row.duracao_meses;
+        return row;
+    },
+
