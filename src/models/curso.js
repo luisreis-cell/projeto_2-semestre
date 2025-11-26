@@ -20,3 +20,12 @@ module.exports = {
         return row;
     },
 
+    async criar({ nome, descricao, duracao_meses = 0 }) {
+        const [result] = await pool.query(
+          'INSERT INTO cursos (nome, descricao, duracao_meses) VALUES (?, ?, ?)',
+          [nome, descricao, duracao_meses]
+        );
+        return { id: result.insertId, nome, descricao, duracao_meses, carga_horaria: duracao_meses };
+    },
+
+   
