@@ -29,3 +29,15 @@ module.exports = {
     },
 
    
+ async editar(id, { nome, descricao, duracao_meses }) {
+        await pool.query(
+          'UPDATE cursos SET nome = ?, descricao = ?, duracao_meses = ? WHERE id = ?',
+          [nome, descricao, duracao_meses, id]
+        );
+        return this.buscarPorId(id);
+    },
+
+    async deletar(id) {
+        await pool.query('DELETE FROM cursos WHERE id = ?', [id]);
+    } 
+};
