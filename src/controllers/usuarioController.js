@@ -2,17 +2,18 @@ const bcrypt = require('bcrypt');
 const Usuario = require('../models/usuario');
 
 module.exports = {
-  mostrarLogin(req, res) {
+  
+  mostrarTelaLogin(req, res) {
     res.render('login', { 
       titulo: 'Acesso ao Sistema',
       erroAnterior: req.flash('error')[0]
     });
   },
 
-  async autenticar(req, res) {
+  async processarLogin(req, res) {
     try {
       const { email, senha } = req.body;
-
+      
       if (!email || !senha) {
         return res.render('login', { 
           erro: 'Email e senha são obrigatórios'
@@ -34,6 +35,7 @@ module.exports = {
           erro: 'Email ou senha incorretos'
         });
       }
+      
       delete usuario.senha;
       req.session.usuario = usuario;
       req.flash('success', `Bem-vindo, ${usuario.nome}!`);
@@ -46,18 +48,18 @@ module.exports = {
     }
   },
 
-  mostrarCadastro(req, res) {
+  mostrarTelaCadastro(req, res) {
     res.render('cadastro', { titulo: 'Criar Conta' });
   },
 
-  async registrar(req, res) {
+  async criarUsuario(req, res) {
     try {
       const { nome, email, senha, confirmaSenha } = req.body;
-
+      
       if (!nome || !email || !senha || !confirmaSenha) {
         return res.render('cadastro', {
           erro: 'Todos os campos são obrigatórios',
-          email 
+          email
         });
       }
       
