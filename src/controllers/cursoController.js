@@ -1,71 +1,70 @@
 const Curso = require('../models/curso');
 
 module.exports = {
-    async listar(req, res) {
-        try {
-            let cursos = await Curso.listar();
-            res.render('curso/listar', { cursos });
-        } catch (err) {
-            console.log('erro listando cursos:', err);
-            res.status(500).send("Erro ao listar cursos.");
-        }
-    },
-
-    async formNovo(req, res) {
-        try {
-            res.render('curso/novo');
-        } catch (err) {
-            res.status(500).send("Erro no form novo.");
-        }
-    },
-
-    async criar(req, res) {
-        try {
-            let { nome, descricao, duracao_meses } = req.body;
-    
-            duracao_meses = Number(duracao_meses);
-            
-            await Curso.criar({ nome, descricao, duracao_meses });
-            
-            req.flash('success', 'Curso cadastrado!');
-            res.redirect('/curso');
-        } catch (err) {
-            console.error('falha criando curso:', err);
-            res.status(500).send("Erro ao criar curso.");
-        }
-    },
-
-    async editarForm(req, res) {
-        try {
-            let curso = await Curso.buscarPorId(req.params.id);
-            res.render('curso/editar', { curso });
-        } catch (err) {
-            res.status(500).send("Erro abrindo edição.");
-        }
-    },
-
-    async atualizar(req, res) {
-        try {
-            let { nome, descricao, duracao_meses } = req.body;
-            duracao_meses = Number(duracao_meses);
-            
-            await Curso.editar(req.params.id, { nome, descricao, duracao_meses });
-            
-            req.flash('success', 'Curso atualizado!');
-            res.redirect('/curso');
-        } catch (err) {
-            res.status(500).send("Erro salvando curso.");
-        }
-    },
-
-    async remover(req, res) {
-        try {
-            await Curso.deletar(req.params.id);
-            req.flash('success', 'Curso deletado.');
-            res.redirect('/curso');
-        } catch (err) {
-            console.log('deu erro removendo:', err);
-            res.status(500).send("Erro ao excluir curso.");
-        }
+  async listarTodos(req, res) {
+    try {
+      const cursos = await Curso.listar();
+      
+      if (!cursos || cursos.length === 0) {
+        req.flash('info', 'Nenhum curso cadastrado ainda.');
+      }
+      
+      res.render('curso/listar', { 
+        cursos,
+        total: cursos.length, 
+        titulo: 'Gerenciar Cursos'
+      });
+    } catch (erro) {
+      console.error('Falha ao listar cursos da base:', erro.message);
+      req.flash('error', 'Ops! Não conseguimos carregar os cursos. Tente novamente.');
+      res.status(500).redirect('/');
     }
+  },
+  async novo(req, res) {
+    try {
+      res.render('curso/novo', { 
+        titulo: 'Novo Curso',
+        acao: 'criar'
+      });
+    } catch (erro) {
+      console.error('Erro ao renderizar formulário:', erro);
+      res.status(500).send('Não foi possível acessar o formulário.');
+    }
+  },
+
+  async criar(req, res) {
+    try {
+      let { nome, descricao, duracao_meses } = req.body;
+
+      if (!nome || !nome.trim()) {
+        return res.render('curso/novo', { 
+          erro: 'Nome do curso é obrigatório',
+          dados: req.body
+        });
+      }
+        
+      duracao_meses = parseInt(duracao_meses, 10);
+      if (isNaN(duracao_meses) || duracao_meses <= 0) {
+        return res.render('curso/novo', { 
+          erro: 'Duração deve ser um número positivo',
+          dados: req.body
+        });
+      }
+      
+      await Curso.criar({ nome: nome.trim(), descricao, duracao_meses });
+      
+      req.flash('success', `Curso "${nome}" criado com sucesso!`);
+      res.redirect('/curso');
+    } catch (erro) {
+      console.error('Erro ao criar curso:', erro);
+
+      if (erro.code === 'ER_DUP_ENTRY') {
+        req.flash('error', 'Já existe um curso com esse nome.');
+        return res.redirect('/curso/novo');
+      }
+      
+      req.flash('error', 'Algo deu errado ao salvar o curso. Verifique os dados.');
+      res.redirect('/curso/novo');
+    }
+  }
 };
