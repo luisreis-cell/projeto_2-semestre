@@ -1,13 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const alunoController = require('../controllers/alunoController');
-const auth = require('../middleware/auth');
+const { verificarAutenticacao } = require('../middleware/auth');
 
-router.get('/', auth.ensureRole(['admin','professor']), alunoController.listar);
-router.get('/novo', auth.ensureRole(['admin','professor']), alunoController.formNovo);
-router.post('/novo', auth.ensureRole(['admin','professor']), alunoController.criar);
-router.get('/:id/editar', auth.ensureRole(['admin','professor']), alunoController.formEditar);
-router.post('/:id/editar', auth.ensureRole(['admin','professor']), alunoController.editar);
-router.get('/:id/deletar', auth.ensureRole(['admin','professor']), alunoController.deletar);
-
+router.get('/', verificarAutenticacao, alunoController.listarTodos);
+router.get('/novo', verificarAutenticacao, alunoController.novoFormulario);
+router.post('/novo', verificarAutenticacao, alunoController.salvar);
+router.get('/:id/editar', verificarAutenticacao, alunoController.editarFormulario);
+router.post('/:id/editar', verificarAutenticacao, alunoController.atualizar)
+router.get('/:id/excluir', verificarAutenticacao, alunoController.excluir);
 module.exports = router;
