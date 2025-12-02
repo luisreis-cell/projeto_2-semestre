@@ -3,53 +3,76 @@ const Usuario = require('../models/usuario');
 
 module.exports = {
 
-    formLogin(req, res) {
+    mostrarTelaLogin(req, res) {
         res.render('login');
     },
 
-    async login(req, res) {
-        const { email, senha } = req.body;
+    async processarLogin(req, res) {
+        try {
+            const { email, senha } = req.body;
 
-        const usuario = await Usuario.buscarPorEmail(email);
+            const usuario = await Usuario.buscarPorEmail(email);
 
-        if (!usuario) {
-            return res.render('login', { error: 'Usuário ou senha incorretos' });
+            if (!usuario) {
+                return res.render('login', { 
+                    error: 'Email ou senha incorretos' 
+                });
+            }
+            const senhaCorreta = await bcrypt.compare(senha, usuario.senha);
+
+            if (!senhaCorreta) {
+                return res.render('login', { 
+                    error: 'Email ou senha incorretos' 
+                });
+            }
+
+            delete usuario.senha;
+            req.session.usuario = usuario;
+
+            res.redirect('/aluno');
+        } catch (error) {
+            console.error('Erro no login:', error);
+            res.render('login', { 
+                error: 'Erro no sistema. Tente novamente.' 
+            });
         }
-
-        const match = await bcrypt.compare(senha, usuario.senha);
-        if (!match) {
-            return res.render('login', { error: 'Usuário ou senha incorretos' });
-        }
-        delete usuario.senha;
-        req.session.usuario = usuario;
-        res.redirect('/aluno');
     },
-
-    formCadastro(req, res) {
+    mostrarTelaCadastro(req, res) {
         res.render('cadastro');
     },
 
-    async cadastrar(req, res) {
-        const { nome, email, senha } = req.body;
-
-        const hash = await bcrypt.hash(senha, 10);
+    async criarUsuario(req, res) {
         try {
-            await Usuario.criar({ nome, email, senha: hash, papel: 'user' });
-            req.flash('success', 'Conta criada com sucesso. Faça login.');
-            return res.redirect('/usuario/login');
-        } catch (err) {
-            if (err && err.code === 'ER_DUP_ENTRY') {
-                    req.flash('error', 'Este e-mail já está cadastrado.');
-                    return res.redirect('/usuario/cadastro');
+            const { nome, email, senha } = req.body;
+            const senhaHash = await bcrypt.hash(senha, 10);
+
+            await Usuario.criar({ 
+                nome, 
+                email, 
+                senha: senhaHash, 
+                papel: 'user' 
+            });
+
+            req.flash('success', 'Conta criada! Faça login agora.');
+            res.redirect('/usuario/login');
+        } catch (error) {
+            if (error && error.code === 'ER_DUP_ENTRY') {
+                req.flash('error', 'Este email já está cadastrado.');
+                return res.redirect('/usuario/cadastro');
             }
-            console.error(err);
-            req.flash('error', 'Ocorreu um erro. Tente novamente.');
-            return res.redirect('/usuario/cadastro');
+
+            console.error('Erro ao criar usuário:', error);
+            req.flash('error', 'Erro no cadastro. Tente novamente.');
+            res.redirect('/usuario/cadastro');
         }
     },
 
     logout(req, res) {
-        req.session.destroy();
-        res.redirect('/usuario/login');
+        req.session.destroy((err) => {
+            if (err) {
+                console.error('Erro no logout:', err);
+            }
+            res.redirect('/usuario/login');
+        });
     }
 };
