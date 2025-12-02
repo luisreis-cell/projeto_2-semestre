@@ -1,7 +1,6 @@
 const pool = require('../config/db');
 
 module.exports = {
-    // compat: listarComCurso usado pelo controller original
     async listarComCurso() {
         const [rows] = await pool.query(`
             SELECT a.id, a.nome, a.idade, a.matricula, a.email, a.data_nascimento, a.criado_em, c.id AS curso_id, c.nome AS curso_nome
@@ -18,10 +17,7 @@ module.exports = {
         const [rows] = await pool.query('SELECT * FROM alunos WHERE id = ?', [id]);
         return rows[0] || null;
     },
-    // aceitar both formatos: { nome, idade, curso_id } (forms antigos) ou
-    // { nome, matricula, email, curso_id, data_nascimento }
     async criar({ nome, idade = null, matricula = null, email = null, curso_id = null, data_nascimento = null }) {
-        // gerar matrícula simples caso não fornecida
         if (!matricula) {
             const ts = Date.now().toString().slice(-6);
             matricula = 'MAT' + ts;
