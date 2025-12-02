@@ -20,8 +20,6 @@ module.exports = {
         if (!match) {
             return res.render('login', { error: 'Usuário ou senha incorretos' });
         }
-
-        // Remover senha antes de armazenar na sessão
         delete usuario.senha;
         req.session.usuario = usuario;
         res.redirect('/aluno');
@@ -40,7 +38,6 @@ module.exports = {
             req.flash('success', 'Conta criada com sucesso. Faça login.');
             return res.redirect('/usuario/login');
         } catch (err) {
-            // Duplicate email
             if (err && err.code === 'ER_DUP_ENTRY') {
                     req.flash('error', 'Este e-mail já está cadastrado.');
                     return res.redirect('/usuario/cadastro');
