@@ -37,7 +37,6 @@ module.exports = {
   async criar(dados) {
     const { nome, descricao = '', duracao_meses = 0 } = dados;
 
-    // Validação básica
     if (!nome || !nome.trim()) {
       throw new Error('Nome do curso é obrigatório');
     }
