@@ -8,12 +8,10 @@ async function run() {
   const sqlPath = path.join(__dirname, '..', 'Rauls.session.sql');
   let sql = fs.readFileSync(sqlPath, 'utf8');
 
-  // Gerar hashes bcrypt para os 3 usuários de exemplo
   const hash1 = await bcrypt.hash('admin123', 10);
   const hash2 = await bcrypt.hash('prof123', 10);
   const hash3 = await bcrypt.hash('aluno123', 10);
 
-  // Substituir placeholders sequencialmente
   sql = sql.replace('<bcrypt_hash_here>', hash1);
   sql = sql.replace('<bcrypt_hash_here>', hash2);
   sql = sql.replace('<bcrypt_hash_here>', hash3);
