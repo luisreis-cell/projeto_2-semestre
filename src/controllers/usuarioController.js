@@ -2,7 +2,7 @@ const bcrypt = require('bcrypt');
 const Usuario = require('../models/usuario');
 
 module.exports = {
-  
+
   mostrarTelaLogin(req, res) {
     res.render('login', { 
       titulo: 'Acesso ao Sistema',
@@ -54,16 +54,16 @@ module.exports = {
 
   async criarUsuario(req, res) {
     try {
-      const { nome, email, senha, confirmaSenha } = req.body;
+      const { nome, email, senha, confirmar_senha } = req.body;
       
-      if (!nome || !email || !senha || !confirmaSenha) {
+      if (!nome || !email || !senha || !confirmar_senha) {
         return res.render('cadastro', {
           erro: 'Todos os campos são obrigatórios',
           email
         });
       }
       
-      if (senha !== confirmaSenha) {
+      if (senha !== confirmar_senha) {
         return res.render('cadastro', {
           erro: 'As senhas não conferem',
           email
