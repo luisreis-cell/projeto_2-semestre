@@ -1,71 +1,70 @@
 const Curso = require('../models/curso');
 
 module.exports = {
-
     async listar(req, res) {
         try {
-            const cursosDisponiveis = await Curso.listar();
-            res.render('curso/listar', { cursos: cursosDisponiveis });
-        } catch (error) {
+            let cursos = await Curso.listar();
+            res.render('curso/listar', { cursos });
+        } catch (err) {
+            console.log('erro listando cursos:', err);
             res.status(500).send("Erro ao listar cursos.");
         }
     },
 
-    async mostrarFormularioNovo(req, res) {
+    async formNovo(req, res) {
         try {
             res.render('curso/novo');
-        } catch (error) {
-            res.status(500).send("Erro ao abrir formulário de novo curso.");
+        } catch (err) {
+            res.status(500).send("Erro no form novo.");
         }
     },
 
     async criar(req, res) {
         try {
-            const { nome, descricao, duracao_meses } = req.body;
-
-            await Curso.criar({
-                nome,
-                descricao,
-                duracao_meses: Number(duracao_meses)
-            });
-
-            req.flash('success', 'Curso criado com sucesso.');
+            let { nome, descricao, duracao_meses } = req.body;
+    
+            duracao_meses = Number(duracao_meses);
+            
+            await Curso.criar({ nome, descricao, duracao_meses });
+            
+            req.flash('success', 'Curso cadastrado!');
             res.redirect('/curso');
-        } catch (error) {
+        } catch (err) {
+            console.error('falha criando curso:', err);
             res.status(500).send("Erro ao criar curso.");
         }
     },
 
-    async mostrarFormularioEditar(req, res) {
+    async editarForm(req, res) {
         try {
-            const cursoParaEditar = await Curso.buscarPorId(req.params.id);
-            res.render('curso/editar', { curso: cursoParaEditar });
-        } catch (error) {
-            res.status(500).send("Erro ao abrir formulário de edição.");
+            let curso = await Curso.buscarPorId(req.params.id);
+            res.render('curso/editar', { curso });
+        } catch (err) {
+            res.status(500).send("Erro abrindo edição.");
         }
     },
-    async editar(req, res) {
+
+    async atualizar(req, res) {
         try {
-            const { nome, descricao, duracao_meses } = req.body;
-
-            await Curso.editar(req.params.id, {
-                nome,
-                descricao,
-                duracao_meses: Number(duracao_meses)
-            });
-
-            req.flash('success', 'Curso atualizado com sucesso.');
+            let { nome, descricao, duracao_meses } = req.body;
+            duracao_meses = Number(duracao_meses);
+            
+            await Curso.editar(req.params.id, { nome, descricao, duracao_meses });
+            
+            req.flash('success', 'Curso atualizado!');
             res.redirect('/curso');
-        } catch (error) {
-            res.status(500).send("Erro ao editar curso.");
+        } catch (err) {
+            res.status(500).send("Erro salvando curso.");
         }
     },
-    async deletar(req, res) {
+
+    async remover(req, res) {
         try {
             await Curso.deletar(req.params.id);
-            req.flash('success', 'Curso excluído com sucesso.');
+            req.flash('success', 'Curso deletado.');
             res.redirect('/curso');
-        } catch (error) {
+        } catch (err) {
+            console.log('deu erro removendo:', err);
             res.status(500).send("Erro ao excluir curso.");
         }
     }
