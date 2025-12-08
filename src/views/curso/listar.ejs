@@ -12,12 +12,21 @@
     <% } %>
   </div>
 
+  <% if (typeof messages !== 'undefined' && messages.success && messages.success.length > 0) { %>
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+      <%= messages.success[0] %>
+      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+  <% } %>
+
+  <% if (typeof messages !== 'undefined' && messages.error && messages.error.length > 0) { %>
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+      <%= messages.error[0] %>
+      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+  <% } %>
+
   <% if (cursos && cursos.length > 0) { %>
-    <% if (messages && messages.success && messages.success.length) { %>
-      <% messages.success.forEach(m => { %>
-        <div class="alert alert-success"><%= m %></div>
-      <% }) %>
-    <% } %>
     <div class="table-responsive">
       <table class="table table-striped table-hover align-middle">
         <thead class="table-primary">
@@ -26,6 +35,9 @@
             <th>Nome</th>
             <th>Descrição</th>
             <th>Dur. (meses)</th>
+            <% if (typeof mostrarContagem !== 'undefined' && mostrarContagem) { %>
+            <th>Total de Alunos</th>
+            <% } %>
             <th class="text-end">Ações</th>
           </tr>
         </thead>
@@ -36,6 +48,9 @@
             <td><%= c.nome %></td>
             <td><%= c.descricao ? c.descricao : '-' %></td>
             <td><%= c.carga_horaria || c.duracao_meses %></td>
+            <% if (typeof mostrarContagem !== 'undefined' && mostrarContagem) { %>
+            <td><span class="badge bg-info"><%= c.total_alunos || 0 %></span></td>
+            <% } %>
             <td class="text-end">
               <% if (!usuario) { %>
                 <a class="btn btn-sm btn-primary me-2 disabled" href="/usuario/login" aria-disabled="true">Editar</a>

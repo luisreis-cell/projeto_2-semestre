@@ -54,5 +54,71 @@ module.exports = {
     logout(req, res) {
         req.session.destroy();
         res.redirect('/usuario/login');
+    },
+
+    async listar(req, res) {
+        try {
+            const usuarios = await Usuario.listar();
+            res.render('usuario/listar', { usuarios });
+        } catch (erro) {
+            res.status(500).send("Erro ao listar usuários.");
+        }
+    },
+
+    async formEditar(req, res) {
+        try {
+            const usuario = await Usuario.buscarPorId(req.params.id);
+            if (!usuario) {
+                req.flash('error', 'Usuário não encontrado.');
+                return res.redirect('/usuario');
+            }
+            res.render('usuario/editar', { usuario });
+        } catch (erro) {
+            res.status(500).send("Erro ao abrir formulário de edição.");
+        }
+    },
+
+    async editar(req, res) {
+        try {
+            const { nome, email, papel } = req.body;
+            await Usuario.editar(req.params.id, { nome, email, papel });
+            req.flash('success', 'Usuário atualizado com sucesso.');
+            res.redirect('/usuario');
+        } catch (erro) {
+            if (erro && erro.code === 'ER_DUP_ENTRY') {
+                req.flash('error', 'Este e-mail já está cadastrado.');
+                return res.redirect(`/usuario/${req.params.id}/editar`);
+            }
+            res.status(500).send("Erro ao editar usuário.");
+        }
+    },
+
+    async deletar(req, res) {
+        try {
+            // Não permitir excluir o próprio usuário
+            if (req.session.usuario && req.session.usuario.id == req.params.id) {
+                req.flash('error', 'Você não pode excluir sua própria conta.');
+                return res.redirect('/usuario');
+            }
+            await Usuario.deletar(req.params.id);
+            req.flash('success', 'Usuário excluído.');
+            res.redirect('/usuario');
+        } catch (erro) {
+            res.status(500).send("Erro ao excluir usuário.");
+        }
+    },
+
+    async perfil(req, res) {
+        try {
+            const usuario = await Usuario.buscarPorId(req.session.usuario.id);
+            if (!usuario) {
+                return res.redirect('/usuario/login');
+            }
+            // Remover senha antes de enviar para view
+            delete usuario.senha;
+            res.render('usuario/perfil', { usuario });
+        } catch (erro) {
+            res.status(500).send("Erro ao carregar perfil.");
+        }
     }
 };

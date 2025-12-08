@@ -1,0 +1,58 @@
+<%- include('../partials/header') %>
+
+<main class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Usuários</h2>
+        <a class="btn btn-primary" href="/usuario/cadastro">Novo Usuário</a>
+    </div>
+
+    <% if (typeof messages !== 'undefined' && messages.success && messages.success.length > 0) { %>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <%= messages.success[0] %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    <% } %>
+
+    <% if (typeof messages !== 'undefined' && messages.error && messages.error.length > 0) { %>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <%= messages.error[0] %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    <% } %>
+
+    <% if (usuarios && usuarios.length > 0) { %>
+        <div class="table-responsive">
+            <table class="table table-striped table-hover align-middle">
+                <thead class="table-primary">
+                    <tr>
+                        <th>Nome</th>
+                        <th>Email</th>
+                        <th>Papel</th>
+                        <th>Data de Criação</th>
+                        <th class="text-end">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <% usuarios.forEach(u => { %>
+                    <tr>
+                        <td><%= u.nome %></td>
+                        <td><%= u.email %></td>
+                        <td><span class="badge bg-secondary"><%= u.papel %></span></td>
+                        <td><%= u.criado_em ? new Date(u.criado_em).toLocaleDateString('pt-BR') : '-' %></td>
+                        <td class="text-end">
+                            <a class="btn btn-sm btn-primary me-2" href="/usuario/<%= u.id %>/editar">Editar</a>
+                            <a class="btn btn-sm btn-danger" href="/usuario/<%= u.id %>/deletar" onclick="return confirm('Excluir este usuário?')">Excluir</a>
+                        </td>
+                    </tr>
+                <% }) %>
+                </tbody>
+            </table>
+        </div>
+    <% } else { %>
+        <div class="alert alert-info">Nenhum usuário cadastrado.</div>
+    <% } %>
+
+</main>
+
+<%- include('../partials/footer') %>
+

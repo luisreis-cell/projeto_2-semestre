@@ -3,7 +3,8 @@ const router = express.Router();
 const cursoController = require('../controllers/cursoController');
 const auth = require('../middleware/auth');
 
-router.get('/', cursoController.listar);
+// List and read: only professors and admins should see/manage courses
+router.get('/', auth.ensureRole(['admin','professor']), cursoController.listarComAlunos);
 router.get('/novo', auth.ensureRole('admin'), cursoController.formNovo);
 router.post('/novo', auth.ensureRole('admin'), cursoController.criar);
 router.get('/:id/editar', auth.ensureRole('admin'), cursoController.formEditar);

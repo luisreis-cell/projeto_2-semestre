@@ -31,8 +31,7 @@ CREATE TABLE usuarios (
     email VARCHAR(150) NOT NULL UNIQUE,
     senha VARCHAR(255) NOT NULL, -- armazenar hash bcrypt aqui (ex: $2b$...)
     papel ENUM('admin','user') NOT NULL DEFAULT 'user',
-    criado_em TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    atualizado_em TIMESTAMP NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
+    criado_em TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- 2) Tabela de cursos
@@ -50,10 +49,7 @@ CREATE TABLE alunos (
     nome VARCHAR(150) NOT NULL,
     idade INT NULL,
     matricula VARCHAR(60) NOT NULL UNIQUE,
-    email VARCHAR(150) NULL,
     curso_id INT NULL,
-    data_nascimento DATE NULL,
-    criado_em TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_aluno_curso FOREIGN KEY (curso_id) REFERENCES cursos(id)
         ON UPDATE CASCADE
         ON DELETE SET NULL
@@ -70,11 +66,11 @@ INSERT INTO cursos (nome, descricao, duracao_meses) VALUES
 ('Banco de Dados', 'Modelagem, SQL e administração de bancos relacionais.', 4);
 
 -- Alunos (vinculados a cursos)
-INSERT INTO alunos (nome, idade, matricula, email, curso_id, data_nascimento) VALUES
-('Carlos Pereira', 25, 'MAT2025001', 'carlos.pereira@exemplo.com', 1, '2000-05-12'),
-('Ana Rodrigues', 26,  'MAT2025002', 'ana.rodrigues@exemplo.com', 2, '1999-11-30'),
-('Beatriz Lima', 24,   'MAT2025003', NULL, 1, '2001-02-20'),
-('Diego Santos', 27,   'MAT2025004', 'diego.santos@exemplo.com', 3, '1998-08-08');
+INSERT INTO alunos (nome, idade, matricula, curso_id) VALUES
+('Carlos Pereira', 25, 'MAT2025001', 1),
+('Ana Rodrigues', 26,  'MAT2025002', 2),
+('Beatriz Lima', 24,   'MAT2025003', 1),
+('Diego Santos', 27,   'MAT2025004', 3);
 
 -- Usuários (autenticação)
 -- ATENÇÃO: gere hashes bcrypt a partir da sua aplicação/console Node.js antes de inserir.
@@ -90,43 +86,3 @@ INSERT INTO usuarios (nome, email, senha, papel) VALUES
 ('Professor', 'prof@exemplo.com', '<bcrypt_hash_here>', 'user'),
 ('Aluno Teste', 'aluno@exemplo.com', '<bcrypt_hash_here>', 'user');
 
--- Consultas úteis (exemplos para a aplicação)
--- 1) Listar todos os alunos com nome do curso (JOIN)
-SELECT a.id, a.nome AS aluno, a.matricula, a.email, c.nome AS curso
-FROM alunos a
-LEFT JOIN cursos c ON a.curso_id = c.id
-ORDER BY a.nome;
-
--- 2) Mostrar dados do usuário (por id ou email)
-SELECT id, nome, email, papel, criado_em FROM usuarios WHERE email = 'aluno@exemplo.com';
-
--- 3) Contar alunos por curso (aggregate + join)
-SELECT c.id, c.nome AS curso, COUNT(a.id) AS total_alunos
-FROM cursos c
-LEFT JOIN alunos a ON a.curso_id = c.id
-GROUP BY c.id, c.nome;
-
--- Exemplo de exclusão segura de um curso:
--- Verificar se existem alunos vinculados antes de apagar
--- START TRANSACTION;
--- SELECT COUNT(*) INTO @qtd FROM alunos WHERE curso_id = 2;
--- -- Se @qtd = 0 então pode apagar, caso contrário tratar na aplicação
--- DELETE FROM cursos WHERE id = 2 AND NOT EXISTS (SELECT 1 FROM alunos WHERE curso_id = 2);
--- COMMIT;
-
-/*
-    Como gerar hashes bcrypt rapidamente (Node.js REPL)
-    1) No terminal: `node`  (ou crie um pequeno script)
-    2) No REPL:
-         const bcrypt = require('bcrypt');
-         bcrypt.hash('sua_senha_aqui', 10).then(h=>console.log(h));
-    3) Copie o hash e cole no INSERT acima no lugar de '<bcrypt_hash_here>'.
-
-    Importar este arquivo:
-    - Pelo terminal (PowerShell):
-        mysql -u <usuario> -p < Rauls.session.sql
-
-    Observação de segurança:
-    - Nunca armazene senhas em claro.
-    - Faça validação e hashing na camada de aplicação (Node.js) antes de persistir.
-*/

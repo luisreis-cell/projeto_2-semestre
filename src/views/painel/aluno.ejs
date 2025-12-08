@@ -3,11 +3,31 @@
 <main class="container py-5">
   <h2>Painel do Aluno</h2>
   <p class="lead">Bem-vindo ao seu painel. Você pode visualizar suas informações e cursos.</p>
-  <div class="card shadow-sm">
+  
+  <% if (typeof usuario !== 'undefined' && usuario) { %>
+  <div class="card shadow-sm mt-4">
+    <div class="card-header">
+      <h5 class="mb-0">Meus Dados</h5>
+    </div>
     <div class="card-body">
-      <p>Em breve: ver suas matrículas, notas e perfil.</p>
+      <div class="row mb-3">
+        <div class="col-sm-3"><strong>Nome:</strong></div>
+        <div class="col-sm-9"><%= usuario.nome %></div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-sm-3"><strong>Email:</strong></div>
+        <div class="col-sm-9"><%= usuario.email %></div>
+      </div>
+      <div class="row">
+        <div class="col-sm-3"><strong>Papel:</strong></div>
+        <div class="col-sm-9"><span class="badge bg-secondary"><%= usuario.papel %></span></div>
+      </div>
+      <div class="mt-3">
+        <a href="/usuario/perfil" class="btn btn-primary">Ver Perfil Completo</a>
+      </div>
     </div>
   </div>
+  <% } %>
 </main>
 
 <%- include('../partials/footer') %>

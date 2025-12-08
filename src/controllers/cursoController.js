@@ -35,8 +35,26 @@ module.exports = {
     },
 
     async deletar(req, res) {
-        await Curso.deletar(req.params.id);
-        req.flash('success', 'Curso excluído.');
-        res.redirect('/curso');
+        try {
+            const totalAlunos = await Curso.contarAlunos(req.params.id);
+            if (totalAlunos > 0) {
+                req.flash('error', `Não é possível excluir o curso. Existem ${totalAlunos} aluno(s) associado(s) a este curso.`);
+                return res.redirect('/curso');
+            }
+            await Curso.deletar(req.params.id);
+            req.flash('success', 'Curso excluído.');
+            res.redirect('/curso');
+        } catch (erro) {
+            res.status(500).send("Erro ao excluir curso.");
+        }
+    },
+
+    async listarComAlunos(req, res) {
+        try {
+            const cursos = await Curso.listarComContagemAlunos();
+            res.render('curso/listar', { cursos, mostrarContagem: true });
+        } catch (erro) {
+            res.status(500).send("Erro ao listar cursos.");
+        }
     }
 };
