@@ -11,7 +11,6 @@ router.post('/cadastro', usuarioController.cadastrar);
 
 router.get('/logout', usuarioController.logout);
 
-// Rotas protegidas
 router.get('/', auth.ensureRole('admin'), usuarioController.listar);
 router.get('/perfil', auth.ensureAuthenticated, usuarioController.perfil);
 router.get('/:id/editar', auth.ensureRole('admin'), usuarioController.formEditar);
