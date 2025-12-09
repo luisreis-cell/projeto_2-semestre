@@ -5,7 +5,6 @@ module.exports = {
   },
 
   ensureRole(required) {
-    // required can be a string or array of strings
     return (req, res, next) => {
       const u = req.session && req.session.usuario;
       if (!u) return res.redirect('/acesso-negado');
