@@ -54,3 +54,4 @@ INSERT INTO usuarios (nome, email, senha, papel) VALUES
 ('Professor', 'prof@exemplo.com', '<bcrypt_hash_here>', 'user'),
 ('Aluno Teste', 'aluno@exemplo.com', '<bcrypt_hash_here>', 'user');
 
+SELECT * FROM alunos;
