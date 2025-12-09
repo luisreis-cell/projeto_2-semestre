@@ -21,7 +21,6 @@ module.exports = {
             return res.render('login', { error: 'Usuário ou senha incorretos' });
         }
 
-        // Remover senha antes de armazenar na sessão
         delete usuario.senha;
         req.session.usuario = usuario;
         res.redirect('/aluno');
@@ -40,7 +39,6 @@ module.exports = {
             req.flash('success', 'Conta criada com sucesso. Faça login.');
             return res.redirect('/usuario/login');
         } catch (err) {
-            // Duplicate email
             if (err && err.code === 'ER_DUP_ENTRY') {
                     req.flash('error', 'Este e-mail já está cadastrado.');
                     return res.redirect('/usuario/cadastro');
@@ -95,7 +93,7 @@ module.exports = {
 
     async deletar(req, res) {
         try {
-            // Não permitir excluir o próprio usuário
+
             if (req.session.usuario && req.session.usuario.id == req.params.id) {
                 req.flash('error', 'Você não pode excluir sua própria conta.');
                 return res.redirect('/usuario');
@@ -114,7 +112,6 @@ module.exports = {
             if (!usuario) {
                 return res.redirect('/usuario/login');
             }
-            // Remover senha antes de enviar para view
             delete usuario.senha;
             res.render('usuario/perfil', { usuario });
         } catch (erro) {
