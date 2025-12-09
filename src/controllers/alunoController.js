@@ -5,7 +5,7 @@ module.exports = {
 
     async listar(req, res) {
         try {
-            const alunos = await Aluno.listarComCurso(); // <-- JOIN
+            const alunos = await Aluno.listarComCurso();
             res.render('aluno/listar', { alunos });
         } catch (erro) {
             res.status(500).send("Erro ao listar alunos.");
@@ -36,7 +36,7 @@ module.exports = {
     async formEditar(req, res) {
         try {
             const aluno = await Aluno.buscarPorId(req.params.id);
-            const cursos = await Curso.listar(); // mantém select preenchido
+            const cursos = await Curso.listar();
             res.render('aluno/editar', { aluno, cursos });
         } catch (erro) {
             res.status(500).send("Erro ao abrir formulário de edição.");
